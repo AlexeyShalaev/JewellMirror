@@ -1,0 +1,5 @@
+flask~=2.2.2
+flask-toastr~=0.5.8
+pymongo~=4.3.3
+environs
+requests
