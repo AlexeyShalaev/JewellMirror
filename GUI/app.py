@@ -6,7 +6,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from logging import getLogger
 
 from flask import *
-from flask_toastr import *
 
 from ext.webui.api import api
 from ext.webui.error import error
@@ -22,8 +21,6 @@ app.register_blueprint(view)
 app.register_blueprint(error)
 app.register_blueprint(api)
 app.config['SECRET_KEY'] = config.flask.secret_key
-
-toastr = Toastr(app)
 
 
 def main():
