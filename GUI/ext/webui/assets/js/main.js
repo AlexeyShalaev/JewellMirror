@@ -1,6 +1,6 @@
 $(document).ready(function () {
     setInterval(displayDateTime, 1000);
-    setInterval(displayRemainingSeats, 5000); // todo 5 min ???
+    setInterval(displayRemainingSeats, 5*60*1000);
     //setInterval(displayShabbatTime, 1000); // todo every friday or every 24 hours if jinja not works
 });
 
@@ -35,56 +35,29 @@ function displayDateTime() {
 // Shabbat Region
 
 function displayRemainingSeats() {
-//https://jewellclub.ru/shabbat/kabbalat-shabbat/
-    //todo
-    /*
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://example.com", true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        console.log(xhr.responseText);
-      }
-    };
-    xhr.send();
-    */
+    try {
+        $.ajax({
+                type: 'POST',
+                url: '/api/shabbat/kabbalat',
+                success: function (result) {
+                    const res = JSON.parse(result);
+                    if(res.success){
+                        document.getElementById("kabbalat_shabbat").innerText = "Мест на шаббат осталось: "+res.seats;
+                    } else{
+                        document.getElementById("kabbalat_shabbat").innerText = "";
+                    }
+                }
+            }
+        );
+    } catch
+        (err) {
+    }
 
-    /*
-      fetch("https://jewellclub.ru/shabbat/kabbalat-shabbat/")
-        .then(response => console.log(response.text()))
-        .then(text => console.log(text))
-        .catch(error => console.error(error));
-     */
-    /*
-    fetch("https://www.example.com/")
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(text) {
-        console.log(text);
-      });
-    */
-    /*
-    fetch('http://example.com/movies.json')
-  .then((response) => response.json())
-  .then((data) => console.log(data));
-     */
-    /*
-    let response = await fetch(url);
-    let commits = await response.json(); // читаем ответ в формате JSON
-    alert(commits[0].author.login);
-     */
-    /*
-    fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits')
-  .then(response => response.json())
-  .then(commits => alert(commits[0].author.login));
-     */
 
-    document.getElementById("kabbalat_shabbat").innerText = "число мест";
 }
 
 /*
 function displayShabbatTime(){
-    //todo
     document.getElementById("shabbat_start_time").innerText = "start";
     document.getElementById("shabbat_end_time").innerText = "end";
 }
