@@ -20,3 +20,12 @@ def shabbat_kabbalat():
     except Exception as ex:
         logger.error(ex)
     return json.dumps({'success': False}), 200, {'ContentType': 'application/json'}
+
+
+@api.route('/test', methods=['POST'])
+def test():
+    try:
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    except Exception as ex:
+        logger.error(ex)
+    return json.dumps({'success': False}), 200, {'ContentType': 'application/json'}

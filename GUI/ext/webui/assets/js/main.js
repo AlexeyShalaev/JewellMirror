@@ -1,9 +1,24 @@
 $(document).ready(function () {
     setInterval(displayDateTime, 1000);
-    setInterval(displayRemainingSeats, 5*60*1000);
+    setInterval(displayRemainingSeats, 5 * 60 * 1000);
     //setInterval(displayShabbatTime, 1000); // todo every friday or every 24 hours if jinja not works
-});
 
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onopen = function (event) {
+        console.log('Connected to server');
+    };
+
+    socket.onmessage = function (event) {
+        console.log(`Message received: ${event.data}`);
+    };
+
+    socket.onclose = function (event) {
+        console.log('Connection closed');
+    };
+
+
+});
 
 //Time Region
 
@@ -41,9 +56,9 @@ function displayRemainingSeats() {
                 url: '/api/shabbat/kabbalat',
                 success: function (result) {
                     const res = JSON.parse(result);
-                    if(res.success){
-                        document.getElementById("kabbalat_shabbat").innerText = "Мест на шаббат осталось: "+res.seats;
-                    } else{
+                    if (res.success) {
+                        document.getElementById("kabbalat_shabbat").innerText = "Мест на шаббат осталось: " + res.seats;
+                    } else {
                         document.getElementById("kabbalat_shabbat").innerText = "";
                     }
                 }
