@@ -1,9 +1,10 @@
 import asyncio
+from datetime import datetime
 
 import cv2
 import face_recognition
 import websockets
-from datetime import datetime
+
 from DashboardCamera.MongoDB.users import get_users
 from DashboardCamera.models.user import Role
 
@@ -32,3 +33,4 @@ server = websockets.serve(recognise_faces, "localhost", 8080)
 
 asyncio.get_event_loop().run_until_complete(server)
 asyncio.get_event_loop().run_forever()
+# todo inform admins in tg or request to site that camera stopped

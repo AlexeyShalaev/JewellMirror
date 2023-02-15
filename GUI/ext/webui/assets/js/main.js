@@ -1,7 +1,7 @@
 $(document).ready(function () {
+
     setInterval(displayDateTime, 1000);
     setInterval(displayRemainingSeats, 5 * 60 * 1000);
-    //setInterval(displayShabbatTime, 1000); // todo every friday or every 24 hours if jinja not works
 
     const socket = new WebSocket('ws://localhost:8080');
 
@@ -15,10 +15,13 @@ $(document).ready(function () {
 
     socket.onclose = function (event) {
         console.log('Connection closed');
+        if (!isShabbat) location.reload();
     };
 
 
 });
+
+let isShabbat = false;
 
 //Time Region
 
@@ -27,7 +30,26 @@ const months = ['Января', 'Февраля', 'Марта', 'Апреля', 
 function displayDateTime() {
     const now = new Date();
 
+    let day = now.getDay();
     let hours = now.getHours();
+
+    if ((day === 5 && hours >= 12) || (day === 6 && hours < 23)) {
+        document.getElementById("message").innerText = "";
+        document.getElementById("main_info").innerText = "";
+
+        document.getElementById("shabbat_start_time").innerText = "";
+        document.getElementById("shabbat_end_time").innerText = "";
+
+        document.getElementById("kabbalat_shabbat").innerText = "";
+
+        document.getElementById("current_date").innerText = "";
+        document.getElementById("current_date").innerText = "";
+
+        isShabbat = true;
+        return;
+    } else isShabbat = false;
+
+
     let minutes = now.getMinutes();
     let seconds = now.getSeconds();
     if (hours < 10) {
@@ -50,6 +72,10 @@ function displayDateTime() {
 // Shabbat Region
 
 function displayRemainingSeats() {
+
+    if (isShabbat) return;
+
+
     try {
         $.ajax({
                 type: 'POST',
@@ -71,9 +97,3 @@ function displayRemainingSeats() {
 
 }
 
-/*
-function displayShabbatTime(){
-    document.getElementById("shabbat_start_time").innerText = "start";
-    document.getElementById("shabbat_end_time").innerText = "end";
-}
- */
