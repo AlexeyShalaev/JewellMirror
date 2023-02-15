@@ -1,36 +1,31 @@
 import asyncio
-import time
 
+import cv2
+import face_recognition
 import websockets
-
-"""
-async def echo(websocket):
-    async for message in websocket:
-        print(f'echo... {message}')
-        await websocket.send(message)
-
-
-async def main():
-    async with websockets.serve(echo, "localhost", 8765) as server:
-        server.send('alex')
-        await asyncio.Future()  # run forever
-
-
-asyncio.run(main())
-"""
-
-import asyncio
-import websockets
+from datetime import datetime
+from DashboardCamera.MongoDB.users import get_users
+from DashboardCamera.models.user import Role
 
 
 async def recognise_faces(websocket, path):
-    while True:
-        """
-        TODO CV2 + FACE RECOGNATION
-        """
-        message = "Hello from server!"
-        await websocket.send(message)
-        await asyncio.sleep(1)
+    video_capture = cv2.VideoCapture(0)
+    while video_capture.isOpened():
+        ret, frame = video_capture.read()  # take image from camera
+        if ret:
+            encodings = face_recognition.face_encodings(frame)  # find faces in frame
+            if len(encodings) > 0:
+                user_encoding = encodings[0]
+                for user in get_users().data:
+                    results = face_recognition.compare_faces(user.encodings, user_encoding)
+                    if any(results):
+                        if user.role == Role.STUDENT:
+                            now = datetime.now()
+                            # todo member that this user was on course
+                        message = f'Привет, {user.first_name}'
+                        await websocket.send(message)
+                        await asyncio.sleep(1)
+                        break
 
 
 server = websockets.serve(recognise_faces, "localhost", 8080)

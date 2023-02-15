@@ -1,2 +1,4 @@
 websockets
 asyncio
+pymongo
+face_recognition
