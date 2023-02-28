@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from DashboardCamera.MongoDB.users import get_users
+from Background.MongoDB.users import get_users
 
 
 def manage_data():
@@ -10,3 +10,15 @@ def manage_data():
     # send to api while answer not true else telegram warning
     # clear faces
     # update data from jms (users)
+    update_users()
+    update_courses()
+
+
+def update_users():
+    # обновляем данные о поль-ах, чтобы вдруг кто-тьо обновил фото лица
+    pass
+
+
+def update_courses():
+    # обновляем данные о курсах, чтобы понимать по времени какой сейчас ближ. курс
+    pass

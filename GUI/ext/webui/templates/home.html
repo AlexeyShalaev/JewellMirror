@@ -1,57 +1,1127 @@
 <!DOCTYPE html>
+<!--
+Author: Keenthemes
+Product Name: Start HTML Free  - Bootstrap 5 HTML Multipurpose Admin Dashboard Template
+Upgrade to Pro: https://keenthemes.com/products/start-html-pro
+Website: http://www.keenthemes.com
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
+-->
 <html lang="en">
+<!--begin::Head-->
 <head>
-    <meta charset="UTF-8">
-    <title>Jewell Mirror</title>
-    <!-- css -->
-    <link href="../assets/css/jewell-mirror.css" rel="stylesheet"/>
+    <base href="">
+    <meta charset="utf-8"/>
+    <title>Home | Mirror Dashboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" href="../assets/admin/media/logos/favicon.ico"/>
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="../assets/admin/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/admin/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <!--end::Global Stylesheets Bundle-->
 </head>
-<body>
-<div class="region fullscreen below">
-    <div class="container"></div>
-</div>
-<div class="region top bar">
-    <div class="container" id="current_date"></div>
-    <div class="region top left">
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" data-sidebar="on" class="header-fixed header-tablet-and-mobile-fixed sidebar-enabled">
+
+<div class="d-flex flex-column flex-column-fluid mt-5">
+    <!--begin::Content-->
+    <div class="content fs-6 d-flex flex-column-fluid" id="kt_content">
+        <!--begin::Container-->
         <div class="container">
-            <div class="row" id="shabbat_start_time">Зажигание: {{ shabbat['candle'] }}</div>
-            <div class="row" id="shabbat_end_time">Авдала: {{ shabbat['havdalah'] }}</div>
+            <!--begin::Row-->
+            <div class="row g-0 g-xl-5 g-xxl-8">
+                <div class="col-xl-4">
+                    <!--begin::Engage Widget 5-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Body-->
+                        <div class="card-body pb-0">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column h-100">
+                                <!--begin::Text-->
+                                <h3 class="text-dark text-center fs-1 fw-bolder pt-15 lh-lg">Jewell
+                                    <br>Mirror Interface</h3>
+                                <!--end::Text-->
+                                <!--begin::Action-->
+                                <div class="text-center pt-7">
+                                    <a href="{{url_for('view.mirror')}}"
+                                       class="btn btn-primary fw-bolder fs-6 px-7 py-3">Открыть</a>
+                                </div>
+                                <!--end::Action-->
+                                <!--begin::Image-->
+                                <div class="flex-grow-1 bgi-no-repeat bgi-size-contain bgi-position-x-center bgi-position-y-bottom card-rounded-bottom h-200px"
+                                     style="background-image:url('../assets/admin/media/illustrations/terms-2.png')"></div>
+                                <!--end::Image-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Engage Widget 5-->
+                </div>
+                <div class="col-xl-8">
+                    <!--begin::Table Widget 1-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bolder text-dark fs-3">Сервисы</span>
+                            </h3>
+                            <div class="card-toolbar">
+                                <a href="{{url_for('view.logout')}}" class="pe-3">
+                                    <ol class="breadcrumb breadcrumb-separatorless text-muted fs-6 fw-bold">
+                                        <li class="breadcrumb-item pe-3">Выйти:</li>
+                                        <li class="breadcrumb-item pe-3"><img
+                                                style="height: 36px;"
+                                                src="../assets/admin/media/illustrations/icons8-logout-rounded-64.png">
+                                        </li>
+                                    </ol>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <!--begin::Stats Widget 4-->
+                                    <div class="card card-stretch mt-lg-10">
+                                        <!--begin::Body-->
+                                        <div class="card-body">
+                                            <!--begin::Section-->
+                                            <div class="me-2" class="d-flex align-items-center">
+                                                <!--begin::Symbol-->
+                                                <img src="../assets/admin/media/services/icons8-compact-camera-64.png">
+                                                <!--end::Symbol-->
+
+                                                <!--begin::Title-->
+                                                <div>
+                                                    <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder">Dashboard
+                                                        Camera</a>
+                                                    <div class="fs-7 text-muted fw-bold mt-1">mirror_camera</div>
+                                                </div>
+                                                <!--end::Title-->
+                                            </div>
+                                            <!--end::Section-->
+
+                                            <!--begin::Info-->
+                                            <div class="fw-bolder text-muted pt-7">
+                                                <span class="d-block">Статус:</span>
+                                                {% if camera %}
+                                                <span class="badge badge-success pt-2 mt-2">Работает</span>
+                                                {% else %}
+                                                <span class="badge badge-danger pt-2 mt-2">Не работает</span>
+                                                {% endif %}
+
+                                            </div>
+                                            <!--end::Info-->
+
+                                        </div>
+                                        <!--end::Body-->
+                                    </div>
+                                    <!--end::Stats Widget 4-->
+                                </div>
+                                <div class="col-xl-6">
+                                    <!--begin::Stats Widget 4-->
+                                    <div class="card card-stretch mt-lg-10">
+                                        <!--begin::Body-->
+                                        <div class="card-body">
+                                            <!--begin::Section-->
+                                            <div class="me-2" class="d-flex align-items-center">
+                                                <!--begin::Symbol-->
+                                                <img src="../assets/admin/media/services/icons8-background-64.png">
+                                                <!--end::Symbol-->
+
+                                                <!--begin::Title-->
+                                                <div>
+                                                    <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder">Background</a>
+                                                    <div class="fs-7 text-muted fw-bold mt-1">mirror_background</div>
+                                                </div>
+                                                <!--end::Title-->
+                                            </div>
+                                            <!--end::Section-->
+
+                                            <!--begin::Info-->
+                                            <div class="fw-bolder text-muted pt-7">
+                                                <span class="d-block">Статус:</span>
+                                                {% if background %}
+                                                <span class="badge badge-success pt-2 mt-2">Работает</span>
+                                                {% else %}
+                                                <span class="badge badge-danger pt-2 mt-2">Не работает</span>
+                                                {% endif %}
+
+                                            </div>
+                                            <!--end::Info-->
+
+                                        </div>
+                                        <!--end::Body-->
+                                    </div>
+                                    <!--end::Stats Widget 4-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Table Widget 1-->
+                </div>
+            </div>
+            <!--end::Row-->
+
+            <!--begin::Row-->
+            <div class="row g-0 g-xl-5 g-xxl-8">
+                <div class="col-xl-12">
+                    <!--begin::Table Widget 2-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bolder text-dark fs-3">Achievement</span>
+                                <span class="text-muted mt-2 fw-bold fs-6">890,344 Sales</span>
+                            </h3>
+                            <div class="card-toolbar">
+                                <ul class="nav nav-pills nav-pills-sm nav-light">
+                                    <li class="nav-item">
+                                        <a class="nav-link btn btn-active-light btn-color-muted py-2 px-4 active fw-bolder me-2"
+                                           data-bs-toggle="tab" href="#kt_tab_pane_2_1">Day</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link btn btn-active-light btn-color-muted py-2 px-4 fw-bolder me-2"
+                                           data-bs-toggle="tab" href="#kt_tab_pane_2_2">Week</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link btn btn-active-light btn-color-muted py-2 px-4 fw-bolder"
+                                           data-bs-toggle="tab" href="#kt_tab_pane_2_3">Month</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-0 mt-n3">
+                            <div class="tab-content mt-4" id="myTabTables2">
+                                <!--begin::Tap pane-->
+                                <div class="tab-pane fade show active" id="kt_tab_pane_2_1" role="tabpanel"
+                                     aria-labelledby="kt_tab_pane_2_1">
+                                    <!--begin::Table-->
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th class="p-0 w-50px"></th>
+                                                <th class="p-0 min-w-150px"></th>
+                                                <th class="p-0 min-w-120px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-50px"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="px-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1 me-5">
+																				<span class="symbol-label bg-light-primary align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/001-boy.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Brad
+                                                        Simmons</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">HTML, CSS Coding</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-primary">+28%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-danger align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/018-girl-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Jessie
+                                                        Clarcson</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Most Successful</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-danger">+52%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-warning align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/047-girl-25.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Lebron
+                                                        Wayde</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Users</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$3,400,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-warning">+34%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-success align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/043-boy-18.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Kevin
+                                                        Leonard</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Userss</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$35,600,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-success">+230%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-info align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/024-boy-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Randy
+                                                        Trent</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Business Analyst</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$45,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-info">+340%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Tap pane-->
+                                <!--begin::Tap pane-->
+                                <div class="tab-pane fade" id="kt_tab_pane_2_2" role="tabpanel"
+                                     aria-labelledby="kt_tab_pane_2_2">
+                                    <!--begin::Table-->
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th class="p-0 w-50px"></th>
+                                                <th class="p-0 min-w-150px"></th>
+                                                <th class="p-0 min-w-120px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-50px"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="p-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1 me-5">
+																				<span class="symbol-label bg-light-warning align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/047-girl-25.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Lebron
+                                                        Wayde</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Users</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$3,400,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-warning">+34%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-success align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/043-boy-18.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Kevin
+                                                        Leonard</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Userss</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$35,600,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-success">+230%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-info align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/024-boy-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Randy
+                                                        Trent</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Business Analyst</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$45,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-info">+340%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 py-3">
+                                                    <div class="symbol symbol-55px me-5 mt-1">
+																				<span class="symbol-label bg-light-primary align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/001-boy.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Brad
+                                                        Simmons</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">HTML, CSS Coding</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-primary">+28%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 py-3">
+                                                    <div class="symbol symbol-55px mt-1">
+																				<span class="symbol-label bg-light-danger align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/018-girl-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Jessie
+                                                        Clarcson</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Most Successful</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-danger">+52%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Tap pane-->
+                                <!--begin::Tap pane-->
+                                <div class="tab-pane fade" id="kt_tab_pane_2_3" role="tabpanel"
+                                     aria-labelledby="kt_tab_pane_2_3">
+                                    <!--begin::Table-->
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless align-middle">
+                                            <thead>
+                                            <tr>
+                                                <th class="p-0 w-50px"></th>
+                                                <th class="p-0 min-w-150px"></th>
+                                                <th class="p-0 min-w-120px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-70px"></th>
+                                                <th class="p-0 min-w-50px"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="p-0 pb-3 pt-1">
+                                                    <div class="symbol symbol-55px mt-3 me-5">
+																				<span class="symbol-label bg-light-danger align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/018-girl-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Jessie
+                                                        Clarcson</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Most Successful</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-danger">+52%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 pb-3 pt-1">
+                                                    <div class="symbol symbol-55px mt-3">
+																				<span class="symbol-label bg-light-warning align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/047-girl-25.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Lebron
+                                                        Wayde</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Users</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$3,400,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-warning">+34%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 pb-3 pt-1">
+                                                    <div class="symbol symbol-55px mt-3">
+																				<span class="symbol-label bg-light-success align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/043-boy-18.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Kevin
+                                                        Leonard</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Awesome Userss</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$35,600,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-success">+230%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 pb-3 pt-1">
+                                                    <div class="symbol symbol-55px me-5 mt-3">
+																				<span class="symbol-label bg-light-primary align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/001-boy.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Brad
+                                                        Simmons</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">HTML, CSS Coding</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$1,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-primary">+28%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0 pb-3 pt-1">
+                                                    <div class="symbol symbol-55px mt-3">
+																				<span class="symbol-label bg-light-info align-items-end">
+																					<img alt="Logo"
+                                                                                         src="../assets/admin/media/svg/avatars/024-boy-9.svg"
+                                                                                         class="mh-40px">
+																				</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-0">
+                                                    <a href="#" class="text-gray-800 fw-bolder text-hover-primary fs-6">Randy
+                                                        Trent</a>
+                                                    <span class="text-muted fw-bold d-block mt-1">Business Analyst</span>
+                                                </td>
+                                                <td></td>
+                                                <td class="text-end">
+                                                    <span class="text-gray-800 fw-bolder d-block fs-6">$45,200,000</span>
+                                                    <span class="text-muted fw-bold d-block mt-1 fs-7">Paid</span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder text-info">+340%</span>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    <a href="#"
+                                                       class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                        <span class="svg-icon svg-icon-4">
+																					<svg xmlns="http://www.w3.org/2000/svg"
+                                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                         width="24px" height="24px"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         version="1.1">
+																						<g stroke="none"
+                                                                                           stroke-width="1" fill="none"
+                                                                                           fill-rule="evenodd">
+																							<polygon
+                                                                                                    points="0 0 24 0 24 24 0 24"></polygon>
+																							<rect fill="#000000"
+                                                                                                  opacity="0.5"
+                                                                                                  transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000)"
+                                                                                                  x="11" y="5" width="2"
+                                                                                                  height="14"
+                                                                                                  rx="1"></rect>
+																							<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z"
+                                                                                                  fill="#000000"
+                                                                                                  fill-rule="nonzero"
+                                                                                                  transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
+																						</g>
+																					</svg>
+																				</span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Tap pane-->
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Table Widget 2-->
+                </div>
+            </div>
+            <!--end::Row-->
         </div>
+        <!--end::Container-->
     </div>
-    <div class="region top center">
-        <div class="container" id="current_time"></div>
-    </div>
-    <div class="region top right">
-        <div class="container" id="kabbalat_shabbat"></div>
-    </div>
-</div>
-<div class="region upper third">
-    <div class="container"></div>
-</div>
-<div class="region middle center">
-    <div class="container"></div>
-</div>
-<div class="region lower third">
-    <div class="container" id="main_info">Посещаемость отмечена<br/></div>
-</div>
-<div class="region bottom bar">
-    <div class="container"></div>
-    <div class="region bottom left">
-        <div class="container"></div>
-    </div>
-    <div class="region bottom center">
-        <div class="container" id="message">Hello, SomeOne</div>
-    </div>
-    <div class="region bottom right">
-        <div class="container"></div>
-    </div>
-</div>
-<div class="region fullscreen above">
-    <div class="container"></div>
+    <!--end::Content-->
 </div>
 
-<!-- js -->
-<script src="../assets/js/jquery-3.6.3.min.js"></script>
-<script src="../assets/js/main.js"></script>
+<!--begin::Javascript-->
+<!--begin::Global Javascript Bundle(used by all pages)-->
+<script src="../assets/admin/plugins/global/plugins.bundle.js"></script>
+<script src="../assets/admin/js/scripts.bundle.js"></script>
+<!--end::Global Javascript Bundle-->
+<!--begin::Page Custom Javascript(used by this page)-->
+<script src="../assets/admin/js/custom/widgets.js"></script>
+<script src="../assets/admin/js/custom/modals/create-app.js"></script>
+<script src="../assets/admin/js/custom/modals/select-location.js"></script>
+<script src="../assets/admin/js/custom/modals/users-search.js"></script>
+<!--end::Page Custom Javascript-->
+<!--end::Javascript-->
 </body>
+<!--end::Body-->
 </html>

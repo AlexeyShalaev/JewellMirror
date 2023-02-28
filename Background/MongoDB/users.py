@@ -1,4 +1,4 @@
-from DashboardCamera.models.user import *
+from Background.models.user import *
 from . import db, MongoDBResult
 
 """

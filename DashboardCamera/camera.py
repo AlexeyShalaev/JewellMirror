@@ -6,6 +6,7 @@ import face_recognition
 import websockets
 
 from DashboardCamera.MongoDB.users import get_users
+from DashboardCamera.MongoDB.visits import get_visits_by_user_id
 from DashboardCamera.models.user import Role
 
 
@@ -22,7 +23,13 @@ async def recognise_faces(websocket, path):
                     if any(results):
                         if user.role == Role.STUDENT:
                             now = datetime.now()
-                            # todo member that this user was on course
+                            visits = get_visits_by_user_id(user.id).data
+                            # todo logic https://jewellclub.ru/activities/kursy/
+                            if len(visits) == 0:
+                                pass
+                            else:
+                                pass
+                            # understand what is was, if it's after course post api to jms
                         message = f'Привет, {user.first_name}'
                         await websocket.send(message)
                         await asyncio.sleep(1)

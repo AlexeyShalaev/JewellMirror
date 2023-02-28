@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jewell Mirror</title>
+    <!-- css -->
+    <link href="../assets/mirror/css/jewell-mirror.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="region fullscreen below">
+    <div class="container"></div>
+</div>
+<div class="region top bar">
+    <div class="container" id="current_date"></div>
+    <div class="region top left">
+        <div class="container">
+            <div class="row" id="shabbat_start_time">Зажигание: {{ shabbat['candle'] }}</div>
+            <div class="row" id="shabbat_end_time">Авдала: {{ shabbat['havdalah'] }}</div>
+        </div>
+    </div>
+    <div class="region top center">
+        <div class="container" id="current_time"></div>
+    </div>
+    <div class="region top right">
+        <div class="container" id="kabbalat_shabbat"></div>
+    </div>
+</div>
+<div class="region upper third">
+    <div class="container"></div>
+</div>
+<div class="region middle center">
+    <div class="container"></div>
+</div>
+<div class="region lower third">
+    <div class="container" id="main_info">Посещаемость отмечена<br/></div>
+</div>
+<div class="region bottom bar">
+    <div class="container"></div>
+    <div class="region bottom left">
+        <div class="container"></div>
+    </div>
+    <div class="region bottom center">
+        <div class="container" id="message">Hello, SomeOne</div>
+    </div>
+    <div class="region bottom right">
+        <div class="container"></div>
+    </div>
+</div>
+<div class="region fullscreen above">
+    <div class="container"></div>
+</div>
+
+<!-- js -->
+<script src="../assets/mirror/js/jquery-3.6.3.min.js"></script>
+<script src="../assets/mirror/js/main.js"></script>
+</body>
+</html>

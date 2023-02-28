@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from pymongo import MongoClient
 
-from DashboardCamera.config import load_config
+from Background.config import load_config
 
 config = load_config()  # config
 logger = logging.getLogger(__name__)  # logging

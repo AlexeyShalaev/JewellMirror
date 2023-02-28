@@ -14,8 +14,15 @@ class FlaskConfig:
 
 
 @dataclass
+class Authentication:
+    login: str
+    password: str
+
+
+@dataclass
 class Config:  # class config
     flask: FlaskConfig
+    auth: Authentication
 
 
 def load_config(path: str = ".env"):
@@ -26,5 +33,9 @@ def load_config(path: str = ".env"):
         flask=FlaskConfig(
             secret_key=env.str('SECRET_KEY'),
             app_name=env.str('APP_NAME'),
+        ),
+        auth=Authentication(
+            login=env.str('AUTH_LOGIN'),
+            password=env.str('AUTH_PASSWORD'),
         )
     )
