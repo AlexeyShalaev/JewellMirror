@@ -110,13 +110,21 @@ License: For each use you must have a valid license purchased only from above li
 
                                             <!--begin::Info-->
                                             <div class="fw-bolder text-muted pt-7">
-                                                <span class="d-block">Статус:</span>
-                                                {% if camera %}
-                                                <span class="badge badge-success pt-2 mt-2">Работает</span>
-                                                {% else %}
-                                                <span class="badge badge-danger pt-2 mt-2">Не работает</span>
-                                                {% endif %}
-
+                                                <span class="d-block">Статус</span>
+                                                <form method="post">
+                                                    <input hidden name="service" value="camera">
+                                                    {% if camera %}
+                                                    <button type="submit" name="btn_service" value="stop"
+                                                            class="btn btn-danger btn-sm mt-3">
+                                                        Остановить
+                                                    </button>
+                                                    {% else %}
+                                                    <button type="submit" name="btn_service" value="run"
+                                                            class="btn btn-success btn-sm mt-3">
+                                                        Запустить
+                                                    </button>
+                                                    {% endif %}
+                                                </form>
                                             </div>
                                             <!--end::Info-->
 
@@ -147,13 +155,21 @@ License: For each use you must have a valid license purchased only from above li
 
                                             <!--begin::Info-->
                                             <div class="fw-bolder text-muted pt-7">
-                                                <span class="d-block">Статус:</span>
-                                                {% if background %}
-                                                <span class="badge badge-success pt-2 mt-2">Работает</span>
-                                                {% else %}
-                                                <span class="badge badge-danger pt-2 mt-2">Не работает</span>
-                                                {% endif %}
-
+                                                <span class="d-block">Статус</span>
+                                                <form method="post">
+                                                    <input hidden name="service" value="background">
+                                                    {% if background %}
+                                                    <button type="submit" name="btn_service" value="stop"
+                                                            class="btn btn-danger btn-sm mt-3">
+                                                        Остановить
+                                                    </button>
+                                                    {% else %}
+                                                    <button type="submit" name="btn_service" value="run"
+                                                            class="btn btn-success btn-sm mt-3">
+                                                        Запустить
+                                                    </button>
+                                                    {% endif %}
+                                                </form>
                                             </div>
                                             <!--end::Info-->
 

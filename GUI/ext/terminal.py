@@ -16,3 +16,8 @@ def get_service_status(service):
     cmd = f'systemctl status {service}'
     status = os.system(cmd)
     return status == 0
+
+
+def process_service(process, service):
+    cmd = f'systemctl {process} {service}'
+    os.system(cmd)

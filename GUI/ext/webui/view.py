@@ -6,7 +6,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 
 from GUI.ext.user_login import UserLogin
 from GUI.ext import config
-from GUI.ext.terminal import get_camera_status, get_background_status
+from GUI.ext.terminal import get_camera_status, get_background_status, process_service
 from GUI.ext.tools import shabbat
 
 logger = getLogger(__name__)  # logging
@@ -16,9 +16,17 @@ view = Blueprint('view', __name__, template_folder='templates', static_folder='a
 # Уровень:              Главная страница
 # База данных:          -
 # HTML:                 home
-@view.route('/')
+@view.route('/', methods=["GET", "POST"])
 @login_required
 def home():
+    if request.method == "POST":
+        try:
+            if request.form['btn_service'] == 'stop':
+                process_service('stop', request.form['service'])
+            elif request.form['btn_service'] == 'run':
+                process_service('start', request.form['service'])
+        except Exception as ex:
+            logger.error(ex)
     # todo post: download xlsx
     # todo get attendance
     return render_template("home.html", camera=get_camera_status(), background=get_background_status())
