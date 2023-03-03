@@ -1,13 +1,17 @@
 import asyncio
 from datetime import datetime
+from pytz import timezone
 
 import cv2
 import face_recognition
 import websockets
 
+from DashboardCamera.MongoDB.timetables import get_timetable_by_name
 from DashboardCamera.MongoDB.users import get_users
-from DashboardCamera.MongoDB.visits import get_visits_by_user_id
-from DashboardCamera.models.user import Role
+from DashboardCamera.MongoDB.visits import get_visits_by_user_id, add_visit
+from DashboardCamera.models.user import Role, Reward
+
+tz = timezone('Europe/Moscow')
 
 
 async def recognise_faces(websocket, path):
@@ -21,17 +25,29 @@ async def recognise_faces(websocket, path):
                 for user in get_users().data:
                     results = face_recognition.compare_faces(user.encodings, user_encoding)
                     if any(results):
-                        if user.role == Role.STUDENT:
-                            now = datetime.now()
-                            visits = get_visits_by_user_id(user.id).data
-                            # todo logic https://jewellclub.ru/activities/kursy/
-                            if len(visits) == 0:
-                                pass
-                            else:
-                                pass
-                            # understand what is was, if it's after course post api to jms
                         message = f'Привет, {user.first_name}'
-                        await websocket.send(message)
+                        if user.role == Role.STUDENT and user.reward != Reward.NULL:
+                            now = datetime.now(tz)
+                            r = get_timetable_by_name('jewell')
+                            if r.success:
+                                timetable = r.data.days
+                                visits = get_visits_by_user_id(user.id).data
+                                for i in timetable[now.weekday()]:
+                                    if len(visits) % 2 == 0:
+                                        start_time = now.replace(hour=i['hours'], minute=i['minutes'])
+                                        if (now < start_time and (start_time - now).seconds < 15 * 60) or (
+                                                now > start_time and (now - start_time).seconds < 15 * 60):
+                                            add_visit(user.id, now)
+                                            message = f"пришел на занятие {i['courses']}"
+                                            break
+                                    else:
+                                        end_time = now.replace(hour=i['hours'] + 2, minute=i['minutes'])
+                                        if (now < end_time and (end_time - now).seconds < 15 * 60) or (
+                                                now > end_time and (now - end_time).seconds < 15 * 60):
+                                            add_visit(user.id, now)
+                                            message = f"ушел с занятия {i['courses']}"
+                                            break
+                        await websocket.send(message)  # todo beauty messages
                         await asyncio.sleep(1)
                         break
 

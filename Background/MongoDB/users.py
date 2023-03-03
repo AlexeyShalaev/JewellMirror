@@ -17,3 +17,13 @@ def get_users() -> MongoDBResult:
         return MongoDBResult(True, users)
     else:
         return MongoDBResult(False, [])
+
+
+# добавление пользователей
+def add_users(users):
+    db.users.insert_many(users)
+
+
+# очистка Документа
+def truncate():
+    db.users.drop()

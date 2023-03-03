@@ -29,6 +29,8 @@ def home():
             logger.error(ex)
     # todo post: download xlsx
     # todo get attendance
+    # todo reload system
+    # todo check errors
     return render_template("home.html", camera=get_camera_status(), background=get_background_status())
 
 
