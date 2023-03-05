@@ -1,9 +1,10 @@
 import asyncio
+import random
 from datetime import datetime
 from pytz import timezone
 
 import cv2
-import face_recognition
+# import face_recognition
 import websockets
 
 from DashboardCamera.MongoDB.timetables import get_timetable_by_name
@@ -19,11 +20,13 @@ async def recognise_faces(websocket, path):
     while video_capture.isOpened():
         ret, frame = video_capture.read()  # take image from camera
         if ret:
-            encodings = face_recognition.face_encodings(frame)  # find faces in frame
+            encodings = [1]  # develop
+            # encodings = face_recognition.face_encodings(frame)  # find faces in frame
             if len(encodings) > 0:
                 user_encoding = encodings[0]
                 for user in get_users().data:
-                    results = face_recognition.compare_faces(user.encodings, user_encoding)
+                    # results = face_recognition.compare_faces(user.encodings, user_encoding)
+                    results = [random.choice([True, False])]  # develop
                     if any(results):
                         message = f'Привет, {user.first_name}'
                         if user.role == Role.STUDENT and user.reward != Reward.NULL:
@@ -31,7 +34,7 @@ async def recognise_faces(websocket, path):
                             r = get_timetable_by_name('jewell')
                             if r.success:
                                 timetable = r.data.days
-                                visits = get_visits_by_user_id(user.id).data
+                                visits = [visit for visit in get_visits_by_user_id(user.id).data if (now-visit.date).hour<24]
                                 for i in timetable[now.weekday()]:
                                     if len(visits) % 2 == 0:
                                         start_time = now.replace(hour=i['hours'], minute=i['minutes'])
