@@ -10,7 +10,9 @@ $(document).ready(function () {
     };
 
     socket.onmessage = function (event) {
-        console.log(`Message received: ${event.data}`);
+        const js = JSON.parse(event.data);
+        //console.log(js);
+        document.getElementById(js['region']).innerText = js['message'];
     };
 
     socket.onclose = function (event) {
@@ -34,8 +36,9 @@ function displayDateTime() {
     let hours = now.getHours();
 
     if ((day === 5 && hours >= 12) || (day === 6 && hours < 23)) {
-        document.getElementById("message").innerText = "";
-        document.getElementById("main_info").innerText = "";
+        document.getElementById("center").innerText = "";
+        document.getElementById("bottom_center").innerText = "";
+        document.getElementById("bottom_left").innerText = "";
 
         document.getElementById("shabbat_start_time").innerText = "";
         document.getElementById("shabbat_end_time").innerText = "";
@@ -74,7 +77,6 @@ function displayDateTime() {
 function displayRemainingSeats() {
 
     if (isShabbat) return;
-
 
     try {
         $.ajax({
