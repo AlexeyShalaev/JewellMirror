@@ -1,4 +1,3 @@
-from Background.models.user import *
 from . import db, MongoDBResult
 
 """
@@ -7,23 +6,11 @@ from . import db, MongoDBResult
 """
 
 
-# получение записей о всех пользователях
-def get_users() -> MongoDBResult:
-    res = db.users.find()
-    if res:
-        users = []
-        for i in list(res):
-            users.append(User(i))
-        return MongoDBResult(True, users)
-    else:
-        return MongoDBResult(False, [])
-
-
 # добавление пользователей
 def add_users(users):
     db.users.insert_many(users)
 
 
 # очистка Документа
-def truncate():
+def users_truncate():
     db.users.drop()

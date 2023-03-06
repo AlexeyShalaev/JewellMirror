@@ -21,7 +21,7 @@ def get_timetables() -> MongoDBResult:
 def get_timetable_by_name(name: str) -> MongoDBResult:
     timetable = db.timetables.find_one({'name': name})
     if timetable:
-        return MongoDBResult(True, Timetable(map))
+        return MongoDBResult(True, Timetable(timetable))
     else:
         return MongoDBResult(False, None)
 

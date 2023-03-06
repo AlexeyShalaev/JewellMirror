@@ -1,4 +1,3 @@
-from Background.models.timetable import *
 from . import db, MongoDBResult
 
 """
@@ -7,23 +6,12 @@ from . import db, MongoDBResult
 """
 
 
-def get_timetables() -> MongoDBResult:
-    res = db.timetables.find()
+# проверка расписания по имени
+def check_timetable_by_name(name: str) -> bool:
+    res = db.timetables.find_one({'name': name})
     if res:
-        timetables = []
-        for i in list(res):
-            timetables.append(Timetable(i))
-        return MongoDBResult(True, timetables)
-    else:
-        return MongoDBResult(False, [])
-
-
-def get_timetable_by_name(name: str) -> MongoDBResult:
-    timetable = db.timetables.find_one({'name': name})
-    if timetable:
-        return MongoDBResult(True, Timetable(map))
-    else:
-        return MongoDBResult(False, None)
+        return True
+    return False
 
 
 def add_timetable(name, days):
@@ -42,5 +30,5 @@ def update_timetable(name, days):
 
 
 # очистка Документа
-def truncate():
+def timetables_truncate():
     db.timetables.drop()

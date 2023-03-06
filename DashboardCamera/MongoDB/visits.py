@@ -32,10 +32,12 @@ def get_visits_by_user_id(user_id) -> MongoDBResult:
 
 
 # добавление посещаемости
-def add_visit(user_id, date):
+def add_visit(user_id, date, visit_type, courses):
     db.visits.insert_one({
         "user_id": ObjectId(user_id),
-        "date": date
+        "date": date,
+        "visit_type": visit_type.value,
+        "courses": courses
     })
 
 
