@@ -12,6 +12,7 @@ from DashboardCamera.MongoDB.logs import add_log
 from DashboardCamera.MongoDB.timetables import get_timetable_by_name
 from DashboardCamera.MongoDB.users import get_users
 from DashboardCamera.MongoDB.visits import get_visits_by_user_id, add_visit
+from DashboardCamera.api import update_user_attendance
 from DashboardCamera.models.log import LogStatus, LogService
 from DashboardCamera.models.user import Role, Reward
 from DashboardCamera.models.visit import VisitType
@@ -88,6 +89,7 @@ async def recognise_faces(websocket, path):
                                                         now > end_time and (
                                                         now - end_time).seconds < VISIT_RANGE_SECONDS):
                                                     add_visit(user.id, now, VisitType.EXIT, i['courses'])
+                                                    await update_user_attendance(user.id, now, 1)
                                                     await websocket.send(json.dumps({'region': 'center',
                                                                                      'message': f"Ты ушел(-ла) с занятия {'/'.join(i['courses'])}"}))
                                                     await asyncio.sleep(3)

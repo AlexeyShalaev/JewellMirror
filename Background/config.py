@@ -9,11 +9,6 @@ class DbConfig:
 
 
 @dataclass
-class TgBot:
-    token: str
-
-
-@dataclass
 class API:
     jewell: str
 
@@ -26,7 +21,6 @@ class Links:
 @dataclass
 class Config:  # class config
     db: DbConfig
-    tg_bot: TgBot
     api: API
     links: Links
 
@@ -38,9 +32,6 @@ def load_config(path: str = ".env"):
     return Config(
         db=DbConfig(
             conn=env.str('DB_CONN'),
-        ),
-        tg_bot=TgBot(
-            token=env.str("BOT_TOKEN")
         ),
         api=API(
             jewell=env.str('JEWELL_TOKEN')
