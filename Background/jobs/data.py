@@ -1,20 +1,25 @@
+import datetime
 import json
 
 from bson.json_util import loads
 
+from Background.MongoDB.logs import add_log, logs_truncate
 from Background.MongoDB.timetables import update_timetable, check_timetable_by_name, add_timetable
 from Background.MongoDB.users import users_truncate, add_users
+from Background.MongoDB.visits import visits_truncate
 from Background.api import get_users_from_api, get_courses_from_api
+from Background.models.log import LogStatus, LogService
 
 
 def manage_data():
     if not update_users():
-        pass
-        # todo: add info to message
+        add_log(LogStatus.WARNING, LogService.BACKGROUND, 'Users have not been updated.')
     if not update_courses_timetable():
-        pass
-        # todo: add info to message
-    # todo: send message
+        add_log(LogStatus.WARNING, LogService.BACKGROUND, 'The schedule has not been updated.')
+    if datetime.datetime.now().day == 1:
+        # every month clear db
+        visits_truncate()
+        logs_truncate()
 
 
 def update_users():
@@ -26,7 +31,7 @@ def update_users():
             add_users(users)
             return True
     except Exception as ex:
-        print(ex)
+        add_log(LogStatus.ERROR, LogService.BACKGROUND, ex)
     return False
 
 
@@ -57,5 +62,5 @@ def update_courses_timetable():
                 add_timetable('jewell', days)
             return True
     except Exception as ex:
-        print(ex)
+        add_log(LogStatus.ERROR, LogService.BACKGROUND, ex)
     return False

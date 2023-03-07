@@ -2,7 +2,9 @@ import json
 
 import requests
 
+from Background.MongoDB.logs import add_log
 from Background.config import load_config
+from Background.models.log import LogStatus, LogService
 
 config = load_config()  # config
 users_url = f'{config.links.jewell}/api/users'
@@ -25,6 +27,6 @@ def get_data_from_api(url: str) -> (bool, ...):
             res = r.json()
             if res['success']:
                 return True, res['data']
-    except:
-        pass
+    except Exception as ex:
+        add_log(LogStatus.ERROR, LogService.BACKGROUND, ex)
     return False, None
