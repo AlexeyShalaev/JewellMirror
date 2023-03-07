@@ -4,8 +4,8 @@ import random
 from datetime import datetime, timedelta
 from pytz import timezone
 
-# import cv2
-# import face_recognition
+import cv2
+import face_recognition
 import websockets
 
 from DashboardCamera.MongoDB.logs import add_log
@@ -25,8 +25,8 @@ VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
 
 
 async def recognise_faces(websocket, path):
-    # video_capture = cv2.VideoCapture(0)
-    while True:  # video_capture.isOpened():
+    video_capture = cv2.VideoCapture(0)
+    while video_capture.isOpened():
         try:
             now = datetime.now(tz)
             r = get_timetable_by_name('jewell')
@@ -52,16 +52,14 @@ async def recognise_faces(websocket, path):
                             timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
                             timetable_message += f'До окончания ухода с {"/".join(i["courses"])}: {timeleft}\n'
                 await websocket.send(json.dumps({'region': 'bottom_left', 'message': timetable_message}))
-                # ret, frame = video_capture.read()  # take image from camera
-                if True:  # ret:
-                    encodings = [1]  # develop
-                    # encodings = face_recognition.face_encodings(frame)  # find faces in frame
+                ret, frame = video_capture.read()  # take image from camera
+                if ret:
+                    encodings = face_recognition.face_encodings(frame)  # find faces in frame
                     if len(encodings) > 0:
                         user_encoding = encodings[0]
                         for user in get_users().data:
-                            # results = face_recognition.compare_faces(user.encodings, user_encoding)
-                            results = [random.choice([True, False])]  # develop
-                            if user.first_name == 'Константин':  # any(results):
+                            results = face_recognition.compare_faces(user.encodings, user_encoding)
+                            if any(results):
                                 message = f'Шалом, {user.first_name}!\n'
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     visits = [visit

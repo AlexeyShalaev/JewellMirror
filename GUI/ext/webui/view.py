@@ -32,10 +32,6 @@ def home():
                 process_service('start', request.form['service'])
         except Exception as ex:
             logger.error(ex)
-    # todo post: download xlsx
-    # todo get attendance
-    # todo reload system
-    # todo check errors
     visits = get_visits().data
     users = get_users_by_role(Role.STUDENT).data
     logs = get_logs().data

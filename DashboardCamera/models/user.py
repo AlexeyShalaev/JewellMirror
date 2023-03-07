@@ -34,6 +34,4 @@ class User:
         self.last_name = data['last_name']
         self.role = Role(data['role'])
         self.reward = Reward(data['reward'])
-        encodings = []
-        for i in data['encodings']:
-            encodings.append(np.fromstring(i, dtype=float, sep=","))
+        self.encodings = [np.array(i) for i in data['encodings']]

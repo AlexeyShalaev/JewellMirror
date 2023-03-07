@@ -1,6 +1,5 @@
 from enum import Enum
 
-import numpy as np
 from bson import ObjectId
 
 
@@ -25,7 +24,6 @@ class User:
     last_name: str  # shalaev
     role: Role  # student/teacher/admin
     reward: Reward  # trip/grant/none
-    encodings: list
 
     def __init__(self, data):
         self.id = data['_id']
@@ -34,6 +32,3 @@ class User:
         self.last_name = data['last_name']
         self.role = Role(data['role'])
         self.reward = Reward(data['reward'])
-        encodings = []
-        for i in data['encodings']:
-            encodings.append(np.fromstring(i, dtype=float, sep=","))
