@@ -1,12 +1,11 @@
 import asyncio
 import json
-import random
 from datetime import datetime, timedelta
-from pytz import timezone
 
 import cv2
 import face_recognition
 import websockets
+from pytz import timezone
 
 from DashboardCamera.MongoDB.logs import add_log
 from DashboardCamera.MongoDB.timetables import get_timetable_by_name
@@ -26,6 +25,10 @@ VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
 
 async def recognise_faces(websocket, path):
     video_capture = cv2.VideoCapture(0)
+    last_user = {
+        "id": None,
+        "date": None
+    }
     while video_capture.isOpened():
         try:
             now = datetime.now(tz)
@@ -51,7 +54,9 @@ async def recognise_faces(websocket, path):
                             secs = str(seconds_left % 60)
                             timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
                             timetable_message += f'До окончания ухода с {"/".join(i["courses"])}: {timeleft}\n'
-                await websocket.send(json.dumps({'region': 'bottom_left', 'message': timetable_message}))
+                if timetable_message != '':
+                    await websocket.send(json.dumps({'region': 'bottom_left', 'message': timetable_message}))
+                    await asyncio.sleep(0.5)
                 ret, frame = video_capture.read()  # take image from camera
                 if ret:
                     encodings = face_recognition.face_encodings(frame)  # find faces in frame
@@ -60,6 +65,12 @@ async def recognise_faces(websocket, path):
                         for user in get_users().data:
                             results = face_recognition.compare_faces(user.encodings, user_encoding)
                             if any(results):
+                                if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
+                                    continue
+                                last_user = {
+                                    "id": user.id,
+                                    "date": now
+                                }
                                 message = f'Шалом, {user.first_name}!\n'
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     visits = [visit
@@ -76,8 +87,8 @@ async def recognise_faces(websocket, path):
                                                     now - start_time).seconds < VISIT_RANGE_SECONDS):
                                                 add_visit(user.id, now, VisitType.ENTER, i['courses'])
                                                 await websocket.send(json.dumps({'region': 'center',
-                                                                                 'message': f"Ты пришел(-ла) на занятие {'/'.join(i['courses'])}"}))
-                                                await asyncio.sleep(3)
+                                                                                 'message': f"{user.first_name} пришел(-ла) на занятие {'/'.join(i['courses'])}"}))
+                                                await asyncio.sleep(1)
                                                 break
                                         else:
                                             if visits[0].courses == i['courses']:
@@ -90,14 +101,14 @@ async def recognise_faces(websocket, path):
                                                     await update_user_attendance(user.id, now, 1)
                                                     await websocket.send(json.dumps({'region': 'center',
                                                                                      'message': f"Ты ушел(-ла) с занятия {'/'.join(i['courses'])}"}))
-                                                    await asyncio.sleep(3)
+                                                    await asyncio.sleep(1)
                                                     break
                                 await websocket.send(json.dumps({'region': 'bottom_center', 'message': message}))
                                 await asyncio.sleep(1)
                                 break
         except Exception as ex:
-            print(ex)
             add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+            await asyncio.sleep(1)
 
 
 server = websockets.serve(recognise_faces, "localhost", 8080)

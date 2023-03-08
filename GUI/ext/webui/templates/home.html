@@ -194,7 +194,20 @@ License: For each use you must have a valid license purchased only from above li
                         <!--begin::Header-->
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label fw-bolder text-dark fs-3">База данных</span>
+                                <ol class="breadcrumb breadcrumb-separatorless text-muted fs-6 fw-bold">
+                                    <li class="breadcrumb-item pe-3"><span class="card-label fw-bolder text-dark fs-3">База данных</span>
+                                    </li>
+                                    <li class="breadcrumb-item pe-3">
+                                        <form method="post">
+                                            <button type="submit" name="btn_service" value="update"
+                                                    style="border: 0; background: transparent">
+                                                <img style="height: 36px;"
+                                                     src="../assets/admin/media/illustrations/update.png">
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ol>
+
                                 <span class="text-muted mt-2 fw-bold fs-6"></span>
                             </h3>
                             <div class="card-toolbar">
@@ -241,13 +254,19 @@ License: For each use you must have a valid license purchased only from above li
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{visit['user']}}: {{users[visit['user_id']]['visits']}}</div>
+                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                        {{visit['user']}}: {{users[visit['user_id']]['visits']}}
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{visit['date']}}</div>
+                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                        {{visit['date']}}
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{visit['courses']}}</div>
+                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                        {{visit['courses']}}
+                                                    </div>
                                                 </td>
                                             </tr>
                                             {% endfor %}
@@ -262,39 +281,45 @@ License: For each use you must have a valid license purchased only from above li
                                      aria-labelledby="kt_tab_pane_2_3">
                                     <!--begin::Table-->
                                     <table class="table table-borderless align-middle">
-                                            <thead>
-                                            <tr>
-                                                <th class="p-0 w-50px"></th>
-                                                <th class="p-0 min-w-100px"></th>
-                                                <th class="p-0 min-w-100px"></th>
-                                                <th class="p-0 min-w-200px"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for log in logs %}
-                                            <tr>
-                                                <td class="px-0 py-3">
-                                                    <div class="symbol symbol-55px mt-1 me-5">
+                                        <thead>
+                                        <tr>
+                                            <th class="p-0 w-50px"></th>
+                                            <th class="p-0 min-w-100px"></th>
+                                            <th class="p-0 min-w-100px"></th>
+                                            <th class="p-0 min-w-200px"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for log in logs %}
+                                        <tr>
+                                            <td class="px-0 py-3">
+                                                <div class="symbol symbol-55px mt-1 me-5">
                                                         <span class="symbol-label bg-light-primary align-items-end">
                                                             <img alt="{{log.status.value}}"
                                                                  src="../assets/admin/media/illustrations/{{log.status.value}}.png"
                                                                  class="mh-40px">
                                                         </span>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{log.content}}</div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{log.beauty_date()}}</div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">{{log.service.value}}</div>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                    {{log.content}}
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                    {{log.beauty_date()}}
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                    {{log.service.value}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                     <!--end::Table-->
                                 </div>
                                 <!--end::Tap pane-->

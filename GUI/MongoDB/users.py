@@ -179,5 +179,5 @@ def delete_user(id):
 
 
 # очистка Документа
-def truncate():
+def users_truncate():
     db.users.drop()

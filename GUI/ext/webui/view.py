@@ -8,6 +8,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from GUI.MongoDB.logs import get_logs
 from GUI.MongoDB.users import get_users_by_role
 from GUI.MongoDB.visits import get_visits
+from GUI.ext.data import manage_data
 from GUI.ext.user_login import UserLogin
 from GUI.ext import config
 from GUI.ext.terminal import get_camera_status, get_background_status, process_service
@@ -30,11 +31,14 @@ def home():
                 process_service('stop', request.form['service'])
             elif request.form['btn_service'] == 'run':
                 process_service('start', request.form['service'])
+            elif request.form['btn_service'] == 'update':
+                manage_data()
         except Exception as ex:
             logger.error(ex)
     visits = get_visits().data
     users = get_users_by_role(Role.STUDENT).data
     logs = get_logs().data
+    logs.sort(key=lambda x: x.date, reverse=True)
     visits.sort(key=lambda x: x.date, reverse=True)
     visits_json = []
     users_dict = dict()

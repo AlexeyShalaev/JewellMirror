@@ -63,5 +63,5 @@ def delete_visit(id):
 
 
 # очистка Документа
-def truncate():
+def visits_truncate():
     db.visits.drop()

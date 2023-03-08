@@ -9,17 +9,24 @@ $(document).ready(function () {
         console.log('Connected to server');
     };
 
-    socket.onmessage = function (event) {
+    socket.onmessage = async function (event) {
         const js = JSON.parse(event.data);
         //console.log(js);
+
         document.getElementById(js['region']).innerText = js['message'];
+
+        if (js['region'] === 'center' || js['region'] === 'bottom_center') {
+            await new Promise(resolve => setTimeout(function () {
+                document.getElementById(js['region']).innerText = '';
+            }, 4000));
+        }
+
     };
 
     socket.onclose = function (event) {
         console.log('Connection closed');
         if (!isShabbat) location.reload();
     };
-
 
 });
 

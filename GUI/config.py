@@ -25,10 +25,22 @@ class DbConfig:
 
 
 @dataclass
+class API:
+    jewell: str
+
+
+@dataclass
+class Links:
+    jewell: str
+
+
+@dataclass
 class Config:  # class config
     flask: FlaskConfig
     auth: Authentication
     db: DbConfig
+    api: API
+    links: Links
 
 
 def load_config(path: str = ".env"):
@@ -46,5 +58,10 @@ def load_config(path: str = ".env"):
         ),
         db=DbConfig(
             conn=env.str('DB_CONN')
+        ), api=API(
+            jewell=env.str('JEWELL_TOKEN')
+        ),
+        links=Links(
+            jewell=env.str('URL_JEWELL')
         )
     )
