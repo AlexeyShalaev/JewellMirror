@@ -34,6 +34,27 @@
 - [256 ГБ 2.5" SATA накопитель Kingston KC600 [SKC600/256G]](https://www.dns-shop.ru/product/d4e603ebe7a3ed20/256-gb-25-sata-nakopitel-kingston-kc600-skc600256g/)
 - [Серверный БП Exegate ServerPRO-1U-400ADS](https://www.dns-shop.ru/product/e9090130a6ee3332/servernyj-bp-exegate-serverpro-1u-400ads/)
 - [Кулер для процессора DEEPCOOL Gamma Archer [DP-MCAL-GA]](https://www.dns-shop.ru/product/376bac04499230b1/kuler-dla-processora-deepcool-gamma-archer-dp-mcal-ga/)
-
 - [Камера]()
 - [Монитор]()
+
+## Устновка
+
+### Операционная система
+
+1. ...
+2. ...
+
+### Настройка среды
+
+1. ...
+2. ...
+
+### Установка пакетов
+
+1. ...
+2. ...
+
+### Настройка сервисов
+
+1. ...
+2. ...
