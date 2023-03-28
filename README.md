@@ -28,7 +28,7 @@
 
 ## Комплектущие
 
-- [Процессор AMD A8-9600 OEM](https://www.dns-shop.ru/product/2cb44d0416f7ed20/processor-amd-a8-9600-oem/)
+- [Процессор AMD Ryzen 3 3200G](https://market.yandex.ru/product--protsessor-amd-ryzen-3-3200g-am4-4-x-3600-mgts/508267136?glfilter=37693330%3A38326419_100709217342&sku=100709217342&cpa=1)
 - [Материнская плата ASRock A320M-ITX](https://www.dns-shop.ru/product/4e7cb0d2afad3332/materinskaa-plata-asrock-a320m-itx/)
 - [Оперативная память AMD Radeon R7 Performance Series [R748G2400U2S-U] 8 ГБ](https://www.dns-shop.ru/product/3212767aee271b80/operativnaa-pamat-amd-radeon-r7-performance-series-r748g2400u2s-u-8-gb/)
 - [256 ГБ 2.5" SATA накопитель Kingston KC600 [SKC600/256G]](https://www.dns-shop.ru/product/d4e603ebe7a3ed20/256-gb-25-sata-nakopitel-kingston-kc600-skc600256g/)
