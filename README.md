@@ -55,9 +55,9 @@
 
 ### Установка пакетов
 
-1. Background `pip install -r requirements`
-2. GUI `pip install -r requirements`
-3. Dashboard Camera `pip install -r requirements`
+1. sudo apt-get install python-dev python-pip python3-dev python3-pip
+2. pip install python-dev-tools
+3. Переходим в директории Background & GUI & Dashboard Camera и пишем `pip install -r requirements`
 
 ### Настройка сервисов
 
