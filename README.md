@@ -63,5 +63,56 @@
 
 ### Настройка [сервисов](https://dzen.ru/media/cyber/sozdaem-systemd-iunit-unit-na-primere-telegram-bota-62383c5d55ea3027de06d7ed?utm_referer=away.vk.com)
 
-1. ...
-2. ...
+1. mirror_background
+```
+[Unit]
+Description=Background
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/JMS/Jewell/Assistant
+ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. mirror_camera
+```
+[Unit]
+Description=Camera
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/JMS/Jewell/Assistant
+ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+3. mirror_gui
+```
+[Unit]
+Description=GUI
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/JMS/Jewell/Assistant
+ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
