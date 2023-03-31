@@ -50,6 +50,7 @@
 1. [AnyDesk](https://anydesk.com/en/downloads/linux)
 2. [MongoDB](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/)
 3. [MongoDB Compass](https://www.mongodb.com/docs/compass/current/install/)
+4. [Git](https://git-scm.com/download/linux)
 
 ### Установка пакетов
 
