@@ -55,9 +55,12 @@
 
 ### Установка пакетов
 
-1. `sudo apt-get install python-dev python-pip python3-dev python3-pip`
-2. `pip install python-dev-tools`
-3. Переходим в директории Background & GUI & Dashboard Camera и пишем `pip install -r requirements`
+1. `sudo apt-get install build-essential cmake pkg-config`
+2. `sudo apt-get install libx11-dev libatlas-base-dev`
+3. `sudo apt-get install libgtk-3-dev libboost-python-dev`
+4. `sudo apt-get install python-dev python-pip python3-dev python3-pip`
+5. `pip install python-dev-tools`
+6. Переходим в директории Background & GUI & Dashboard Camera и пишем `pip install -r requirements`
 
 ### Настройка сервисов
 
