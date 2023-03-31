@@ -59,9 +59,60 @@
 3. `sudo apt-get install libgtk-3-dev libboost-python-dev`
 4. `sudo apt-get install python-dev python-pip python3-dev python3-pip`
 5. `pip install python-dev-tools`
-6. Переходим в директории Background & GUI & Dashboard Camera и пишем `pip install -r requirements`
+6. Переходим в директории Background & GUI (**от root**) & Dashboard Camera и пишем `pip install -r requirements`
 
 ### Настройка [сервисов](https://dzen.ru/media/cyber/sozdaem-systemd-iunit-unit-na-primere-telegram-bota-62383c5d55ea3027de06d7ed?utm_referer=away.vk.com)
 
-1. ...
-2. ...
+1. mirror_background
+```
+[Unit]
+Description=Background
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=jewell
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/Background
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/Background/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. mirror_camera
+```
+[Unit]
+Description=Camera
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=jewell
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/DashboardCamera
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/DashboardCamera/camera.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+3. mirror_gui
+```
+[Unit]
+Description=GUI
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/GUI
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/GUI/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
