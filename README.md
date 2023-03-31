@@ -116,3 +116,23 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
+
+### Bash скрипты (```sh *.sh```)
+
+1. start.sh
+```
+#!/bin/bash
+
+sudo systemctl start mirror_gui.service
+sudo systemctl start mirror_background.service
+sudo systemctl start mirror_camera.service
+```
+
+2. stop.sh
+```
+#!/bin/bash
+
+sudo systemctl stop mirror_gui.service
+sudo systemctl stop mirror_background.service
+sudo systemctl stop mirror_camera.service
+```
