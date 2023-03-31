@@ -61,7 +61,7 @@
 5. `pip install python-dev-tools`
 6. Переходим в директории Background & GUI & Dashboard Camera и пишем `pip install -r requirements`
 
-### Настройка сервисов
+### Настройка [сервисов](https://dzen.ru/media/cyber/sozdaem-systemd-iunit-unit-na-primere-telegram-bota-62383c5d55ea3027de06d7ed?utm_referer=away.vk.com)
 
 1. ...
 2. ...
