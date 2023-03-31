@@ -7,14 +7,14 @@ import face_recognition
 import websockets
 from pytz import timezone
 
-from DashboardCamera.MongoDB.logs import add_log
-from DashboardCamera.MongoDB.timetables import get_timetable_by_name
-from DashboardCamera.MongoDB.users import get_users
-from DashboardCamera.MongoDB.visits import get_visits_by_user_id, add_visit
-from DashboardCamera.api import update_user_attendance
-from DashboardCamera.models.log import LogStatus, LogService
-from DashboardCamera.models.user import Role, Reward
-from DashboardCamera.models.visit import VisitType
+from MongoDB.logs import add_log
+from MongoDB.timetables import get_timetable_by_name
+from MongoDB.users import get_users
+from MongoDB.visits import get_visits_by_user_id, add_visit
+from api import update_user_attendance
+from models.log import LogStatus, LogService
+from models.user import Role, Reward
+from models.visit import VisitType
 
 tz = timezone('Europe/Moscow')
 ONE_DAY = 24 * 60 * 60  # seconds
