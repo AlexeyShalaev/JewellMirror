@@ -72,9 +72,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-WorkingDirectory=/root/JMS/Jewell/Assistant
-ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+User=jewell
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/Background
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/Background/main.py
 Restart=always
 
 [Install]
@@ -90,9 +90,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-WorkingDirectory=/root/JMS/Jewell/Assistant
-ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+User=jewell
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/DashboardCamera
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/DashboardCamera/camera.py
 Restart=always
 
 [Install]
@@ -108,9 +108,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-WorkingDirectory=/root/JMS/Jewell/Assistant
-ExecStart=/usr/bin/python3 /root/JMS/Jewell/Assistant/main.py
+User=jewell
+WorkingDirectory=/home/jewell/Desktop/JewellMirror-main/GUI
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror-main/GUI/app.py
 Restart=always
 
 [Install]
