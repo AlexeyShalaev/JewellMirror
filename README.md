@@ -55,8 +55,9 @@
 
 ### Установка пакетов
 
-1. ...
-2. ...
+1. Background `pip install -r requirements`
+2. GUI `pip install -r requirements`
+3. Dashboard Camera `pip install -r requirements`
 
 ### Настройка сервисов
 
