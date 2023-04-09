@@ -59,7 +59,7 @@
 3. `sudo apt-get install libgtk-3-dev libboost-python-dev`
 4. `sudo apt-get install python-dev python-pip python3-dev python3-pip`
 5. `pip install python-dev-tools`
-6. Переходим в директории Background & GUI (**от root**) & Dashboard Camera и пишем `pip install -r requirements`
+6. Переходим в директории Background & GUI (**от root**) & Dashboard Camera и пишем `pip install -r requirements.txt`
 
 ### Настройка [сервисов](https://dzen.ru/media/cyber/sozdaem-systemd-iunit-unit-na-primere-telegram-bota-62383c5d55ea3027de06d7ed?utm_referer=away.vk.com)
 
