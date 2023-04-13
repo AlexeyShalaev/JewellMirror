@@ -34,6 +34,7 @@ async def recognise_faces(websocket, path):
         "id": None,
         "date": None
     }
+    last_timetable_message_flag = False
     while video_capture.isOpened():
         try:
             now = datetime.now(tz)
@@ -60,7 +61,12 @@ async def recognise_faces(websocket, path):
                             timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
                             timetable_message += f'До окончания ухода с {"/".join(i["courses"])}: {timeleft}\n'
                 if timetable_message != '':
+                    last_timetable_message_flag = True
                     await websocket.send(json.dumps({'region': 'bottom_left', 'message': timetable_message}))
+                    await asyncio.sleep(0.5)
+                elif last_timetable_message_flag:
+                    last_timetable_message_flag = False
+                    await websocket.send(json.dumps({'region': 'bottom_left', 'message': ''}))
                     await asyncio.sleep(0.5)
                 ret, frame = video_capture.read()  # take image from camera
                 if ret:
@@ -112,7 +118,7 @@ async def recognise_faces(websocket, path):
                                 await asyncio.sleep(1)
                                 break
         except Exception as ex:
-            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+            #add_log(LogStatus.ERROR, LogService.CAMERA, ex)
             await asyncio.sleep(1)
 
 
