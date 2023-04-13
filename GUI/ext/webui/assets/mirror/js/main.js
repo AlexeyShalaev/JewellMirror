@@ -52,7 +52,7 @@ function displayDateTime() {
 
         document.getElementById("kabbalat_shabbat").innerText = "";
 
-        document.getElementById("current_date").innerText = "";
+        document.getElementById("current_time").innerText = "";
         document.getElementById("current_date").innerText = "";
 
         isShabbat = true;
