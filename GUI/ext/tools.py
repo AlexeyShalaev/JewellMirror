@@ -36,28 +36,28 @@ def shabbat(geo_name_id: int = 524901) -> dict:
 
 def get_month(m: int, short: bool = True) -> str:
     if m == 1:
-        return "Янв" if short else "января"
+        return "Янв" if short else "Января"
     elif m == 2:
-        return "Фев" if short else "февраля"
+        return "Фев" if short else "Февраля"
     elif m == 3:
-        return "Март" if short else "марта"
+        return "Март" if short else "Марта"
     elif m == 4:
-        return "Апр" if short else "апреля"
+        return "Апр" if short else "Апреля"
     elif m == 5:
-        return "Май" if short else "мая"
+        return "Май" if short else "Мая"
     elif m == 6:
-        return "Июнь" if short else "июня"
+        return "Июнь" if short else "Июня"
     elif m == 7:
-        return "Июль" if short else "июля"
+        return "Июль" if short else "Июля"
     elif m == 8:
-        return "Авг" if short else "августа"
+        return "Авг" if short else "Августа"
     elif m == 9:
-        return "Сент" if short else "сентября"
+        return "Сент" if short else "Сентября"
     elif m == 10:
-        return "Окт" if short else "октября"
+        return "Окт" if short else "Октября"
     elif m == 11:
-        return "Нояб" if short else "ноября"
+        return "Нояб" if short else "Ноября"
     elif m == 12:
-        return "Дек" if short else "декабря"
+        return "Дек" if short else "Декабря"
     else:
         return str(m)
