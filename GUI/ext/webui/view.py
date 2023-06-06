@@ -42,21 +42,30 @@ def home():
     visits.sort(key=lambda x: x.date, reverse=True)
     visits_json = []
     users_dict = dict()
+
     for user in users:
-        users_dict[user.id] = {
-            'name': f'{user.first_name} {user.last_name}',
-            'visits': 0
-        }
+        try:
+            users_dict[user.id] = {
+                'name': f'{user.first_name} {user.last_name}',
+                'visits': 0
+            }
+        except Exception:
+            pass
+
     for visit in visits:
-        js = {
-            'user_id': visit.user_id,
-            'type': visit.visit_type.value,
-            'date': datetime.strftime(visit.date, f'%d.%m.%Y %H:%M:%S'),
-            'courses': '/'.join(visit.courses),
-            'user': users_dict[visit.user_id]['name']
-        }
-        users_dict[visit.user_id]['visits'] += 1
-        visits_json.append(js)
+        try:
+            js = {
+                'user_id': visit.user_id,
+                'type': visit.visit_type.value,
+                'date': datetime.strftime(visit.date, f'%d.%m.%Y %H:%M:%S'),
+                'courses': '/'.join(visit.courses),
+                'user': users_dict[visit.user_id]['name']
+            }
+            users_dict[visit.user_id]['visits'] += 1
+            visits_json.append(js)
+        except Exception:
+            pass
+
     return render_template("home.html",
                            camera=get_camera_status(), background=get_background_status(),
                            visits=visits_json, users=users_dict, logs=logs)

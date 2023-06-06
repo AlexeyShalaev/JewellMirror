@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     setInterval(displayDateTime, 1000);
     setInterval(displayRemainingSeats, 5 * 60 * 1000);
+    setInterval(displayShabbatTime, 24 * 60 * 60 * 1000);
 
     const socket = new WebSocket('ws://localhost:8080');
 
@@ -95,6 +96,30 @@ function displayRemainingSeats() {
                         document.getElementById("kabbalat_shabbat").innerText = "Мест на шаббат осталось: " + res.seats;
                     } else {
                         document.getElementById("kabbalat_shabbat").innerText = "";
+                    }
+                }
+            }
+        );
+    } catch
+        (err) {
+    }
+
+
+}
+
+function displayShabbatTime() {
+
+    if (isShabbat) return;
+
+    try {
+        $.ajax({
+                type: 'POST',
+                url: '/api/shabbat',
+                success: function (result) {
+                    const res = JSON.parse(result);
+                    if (res.success) {
+                        document.getElementById("shabbat_start_time").innerText = "Зажигание: " + res.shabbat['candle'];
+                        document.getElementById("shabbat_end_time").innerText = "Авдала: " + res.shabbat['havdalah'];
                     }
                 }
             }

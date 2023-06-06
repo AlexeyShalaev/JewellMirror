@@ -25,6 +25,8 @@ def get_data_from_api(url: str) -> (bool, ...):
             res = r.json()
             if res['success']:
                 return True, res['data']
+        else:
+            add_log(LogStatus.ERROR, LogService.GUI, 'Failed to send a request to the server.')
     except Exception as ex:
         add_log(LogStatus.ERROR, LogService.GUI, ex)
     return False, None
