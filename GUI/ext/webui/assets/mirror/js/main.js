@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     setInterval(displayDateTime, 1000);
+    displayRemainingSeats();
     setInterval(displayRemainingSeats, 5 * 60 * 1000);
     setInterval(displayShabbatTime, 24 * 60 * 60 * 1000);
 
@@ -43,7 +44,7 @@ function displayDateTime() {
     let day = now.getDay();
     let hours = now.getHours();
 
-    if ((day === 5 && hours >= 12) || (day === 6 && hours < 23)) {
+    if ((day === 5 && hours >= 0) || (day === 6 && hours < 23)) {
         document.getElementById("center").innerText = "";
         document.getElementById("bottom_center").innerText = "";
         document.getElementById("bottom_left").innerText = "";
@@ -53,7 +54,7 @@ function displayDateTime() {
 
         document.getElementById("kabbalat_shabbat").innerText = "";
 
-        document.getElementById("current_date").innerText = "";
+        document.getElementById("current_time").innerText = "";
         document.getElementById("current_date").innerText = "";
 
         isShabbat = true;
