@@ -4,3 +4,4 @@ pymongo~=4.3.3
 environs
 requests
 beautifulsoup4
+lxml
