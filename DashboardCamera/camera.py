@@ -74,7 +74,7 @@ async def recognise_faces(websocket, path):
                     if len(encodings) > 0:
                         user_encoding = encodings[0]
                         for user in get_users().data:
-                            results = face_recognition.compare_faces(user.encodings, user_encoding)
+                            results = face_recognition.compare_faces(user.face_id.encodings, user_encoding)
                             if any(results):
                                 if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
                                     continue
@@ -82,7 +82,7 @@ async def recognise_faces(websocket, path):
                                     "id": user.id,
                                     "date": now
                                 }
-                                message = f'Шалом, {user.first_name}!\n'
+                                message = f'{user.face_id.greeting}, {user.first_name}!\n'
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     visits = [visit
                                               for visit in get_visits_by_user_id(user.id).data
