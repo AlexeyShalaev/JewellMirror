@@ -18,7 +18,7 @@ from DashboardCamera.MongoDB.users import get_users
 from DashboardCamera.MongoDB.visits import get_visits_by_user_id, add_visit
 from DashboardCamera.api import update_user_attendance
 from DashboardCamera.models.log import LogStatus, LogService
-from DashboardCamera.models.user import Role, Reward
+from DashboardCamera.models.user import Role, Reward, Sex
 from DashboardCamera.models.visit import VisitType
 
 tz = timezone('Europe/Moscow')
@@ -98,7 +98,7 @@ async def recognise_faces(websocket, path):
                                                     now - start_time).seconds < VISIT_RANGE_SECONDS):
                                                 add_visit(user.id, now, VisitType.ENTER, i['courses'])
                                                 await websocket.send(json.dumps({'region': 'center',
-                                                                                 'message': f"{user.first_name} пришел(-ла) на занятие {'/'.join(i['courses'])}"}))
+                                                                                 'message': f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(i['courses'])}"}))
                                                 await asyncio.sleep(1)
                                                 break
                                         else:
@@ -111,14 +111,14 @@ async def recognise_faces(websocket, path):
                                                     add_visit(user.id, now, VisitType.EXIT, i['courses'])
                                                     await update_user_attendance(user.id, now, 1)
                                                     await websocket.send(json.dumps({'region': 'center',
-                                                                                     'message': f"Ты ушел(-ла) с занятия {'/'.join(i['courses'])}"}))
+                                                                                     'message': f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} с занятия {'/'.join(i['courses'])}"}))
                                                     await asyncio.sleep(1)
                                                     break
                                 await websocket.send(json.dumps({'region': 'bottom_center', 'message': message}))
                                 await asyncio.sleep(1)
                                 break
         except Exception as ex:
-            #add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+            # add_log(LogStatus.ERROR, LogService.CAMERA, ex)
             await asyncio.sleep(1)
 
 

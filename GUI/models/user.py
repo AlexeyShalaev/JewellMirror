@@ -17,11 +17,18 @@ class Role(Enum):
     NULL = 'null'  # ничего
 
 
+class Sex(Enum):
+    MALE = 'male'  # М
+    FEMALE = 'female'  # Ж
+    NULL = 'null'  # ничего
+
+
 class User:
     id: ObjectId
     telegram_id: int  # telegram chat id
     first_name: str  # alex
     last_name: str  # shalaev
+    sex: Sex  # пол
     role: Role  # student/teacher/admin
     reward: Reward  # trip/grant/none
 
@@ -32,3 +39,4 @@ class User:
         self.last_name = data['last_name']
         self.role = Role(data['role'])
         self.reward = Reward(data['reward'])
+        self.sex = Sex(data.get('sex', 'null'))

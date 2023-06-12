@@ -40,6 +40,7 @@ class User:
     telegram_id: int  # telegram chat id
     first_name: str  # alex
     last_name: str  # shalaev
+    sex: Sex  # пол
     role: Role  # student/teacher/admin
     reward: Reward  # trip/grant/none
     face_id: FaceID
@@ -52,6 +53,7 @@ class User:
             self.last_name = data['last_name']
             self.role = Role(data['role'])
             self.reward = Reward(data['reward'])
+            self.sex = Sex(data.get('sex', 'null'))
             self.face_id = FaceID(data.get('face_id', {}))
         except Exception as ex:
             print(ex)
