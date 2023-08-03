@@ -36,3 +36,14 @@ class Visit:
                            "visit_type": self.visit_type.value,
                            "courses": self.courses
                            })
+
+
+class UnprocessedVisit:
+    id: ObjectId  # ID курса
+    user_id: ObjectId  # ID пользователя
+    date: datetime  # дата
+
+    def __init__(self, data):
+        self.id = data['_id']
+        self.user_id = data['user_id']
+        self.date = tz.localize(data['date'])  # datetime.strptime(data['date'], "%d.%m.%Y %H:%M:%S")

@@ -217,6 +217,10 @@ License: For each use you must have a valid license purchased only from above li
                                            data-bs-toggle="tab" href="#kt_tab_pane_2_1">Посещаемость</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link btn btn-active-light btn-color-muted py-2 px-4 fw-bolder me-2"
+                                           data-bs-toggle="tab" href="#kt_tab_pane_2_2">Неотправленная посещаемость</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link btn btn-active-light btn-color-muted py-2 px-4 fw-bolder"
                                            data-bs-toggle="tab" href="#kt_tab_pane_2_3">Логи</a>
                                     </li>
@@ -267,6 +271,42 @@ License: For each use you must have a valid license purchased only from above li
                                                     <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
                                                         {{visit['courses']}}
                                                     </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Tap pane-->
+                                <!--begin::Tap pane-->
+                                <div class="tab-pane fade show active" id="kt_tab_pane_2_2" role="tabpanel"
+                                     aria-labelledby="kt_tab_pane_2_2">
+                                    <!--begin::Table-->
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless align-middle">
+                                            <tbody>
+                                            {% for visit in unprocessed_visits %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                        {{users[visit.user_id ]['name']}}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="text-gray-800 fw-bolder text-hover-primary fs-2">
+                                                        {{visit.beauty_date()}}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <form method="post">
+                                                        <input hidden name="unprocessed_visit_id" value="{{visit.id}}">
+                                                        <button type="submit" name="btn_service" value="handle_unprocessed_visit"
+                                                                style="border: 0; background: transparent">
+                                                            <img src="../assets/admin/media/illustrations/send_request.png">
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             {% endfor %}

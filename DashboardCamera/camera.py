@@ -71,8 +71,7 @@ async def recognise_faces(websocket, path):
                 ret, frame = video_capture.read()  # take image from camera
                 if ret:
                     encodings = face_recognition.face_encodings(frame)  # find faces in frame
-                    if len(encodings) > 0:
-                        user_encoding = encodings[0]
+                    for user_encoding in encodings:
                         for user in get_users().data:
                             results = face_recognition.compare_faces(user.face_id.encodings, user_encoding)
                             if any(results):

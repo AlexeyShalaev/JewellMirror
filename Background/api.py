@@ -1,4 +1,4 @@
-import json
+from datetime import datetime
 
 import requests
 
@@ -9,6 +9,7 @@ from Background.models.log import LogStatus, LogService
 config = load_config()  # config
 users_url = f'{config.links.jewell}/api/users'
 courses_url = f'{config.links.jewell}/api/courses'
+attendance_url = f'{config.links.jewell}/api/attendance/update'
 jewell_token = config.api.jewell
 
 
@@ -30,3 +31,13 @@ def get_data_from_api(url: str) -> (bool, ...):
     except Exception as ex:
         add_log(LogStatus.ERROR, LogService.BACKGROUND, ex)
     return False, None
+
+
+def send_attendance(user_id, date, count):
+    user_id = str(user_id)
+    date = datetime.strftime(date, "%d.%m.%Y %H:%M:%S")
+    return requests.post(attendance_url,
+                         json={"token": jewell_token,
+                               'user_id': user_id,
+                               'date': date,
+                               'count': count})

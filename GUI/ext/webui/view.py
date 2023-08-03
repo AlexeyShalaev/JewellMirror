@@ -7,8 +7,8 @@ from flask_login import login_user, login_required, current_user, logout_user
 
 from GUI.MongoDB.logs import get_logs
 from GUI.MongoDB.users import get_users_by_role
-from GUI.MongoDB.visits import get_visits
-from GUI.ext.data import manage_data
+from GUI.MongoDB.visits import get_visits, get_unprocessed_visits
+from GUI.ext.data import manage_data, handle_unprocessed_visit
 from GUI.ext.user_login import UserLogin
 from GUI.ext import config
 from GUI.ext.terminal import get_camera_status, get_background_status, process_service
@@ -33,12 +33,19 @@ def home():
                 process_service('start', request.form['service'])
             elif request.form['btn_service'] == 'update':
                 manage_data()
+            elif request.form['btn_service'] == 'handle_unprocessed_visit':
+                handle_unprocessed_visit(request.form['unprocessed_visit_id'])
         except Exception as ex:
             logger.error(ex)
     visits = get_visits().data
     users = get_users_by_role(Role.STUDENT).data
+
     logs = get_logs().data
     logs.sort(key=lambda x: x.date, reverse=True)
+
+    unprocessed_visits = get_unprocessed_visits().data
+    unprocessed_visits.sort(key=lambda x: x.date, reverse=True)
+
     visits.sort(key=lambda x: x.date, reverse=True)
     visits_json = []
     users_dict = dict()
@@ -68,7 +75,7 @@ def home():
 
     return render_template("home.html",
                            camera=get_camera_status(), background=get_background_status(),
-                           visits=visits_json, users=users_dict, logs=logs)
+                           visits=visits_json, users=users_dict, logs=logs, unprocessed_visits=unprocessed_visits)
 
 
 # Уровень:              Авторизация

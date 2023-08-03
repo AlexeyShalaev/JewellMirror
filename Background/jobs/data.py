@@ -6,9 +6,16 @@ from bson.json_util import loads
 from Background.MongoDB.logs import add_log, logs_truncate
 from Background.MongoDB.timetables import update_timetable, check_timetable_by_name, add_timetable
 from Background.MongoDB.users import users_truncate, add_users
-from Background.MongoDB.visits import visits_truncate
-from Background.api import get_users_from_api, get_courses_from_api
+from Background.MongoDB.visits import visits_truncate, get_unprocessed_visits, delete_unprocessed_visit
+from Background.api import get_users_from_api, get_courses_from_api, send_attendance
 from Background.models.log import LogStatus, LogService
+
+
+def truncating():
+    if datetime.datetime.now().day == 1:
+        # every month clear db
+        visits_truncate()
+        logs_truncate()
 
 
 def manage_data():
@@ -16,10 +23,8 @@ def manage_data():
         add_log(LogStatus.WARNING, LogService.BACKGROUND, 'Users have not been updated.')
     if not update_courses_timetable():
         add_log(LogStatus.WARNING, LogService.BACKGROUND, 'The schedule has not been updated.')
-    if datetime.datetime.now().day == 1:
-        # every month clear db
-        visits_truncate()
-        logs_truncate()
+
+    handle_unprocessed_visits()
 
 
 def update_users():
@@ -64,3 +69,10 @@ def update_courses_timetable():
     except Exception as ex:
         add_log(LogStatus.ERROR, LogService.BACKGROUND, ex)
     return False
+
+
+def handle_unprocessed_visits():
+    for i in get_unprocessed_visits().data:
+        r = send_attendance(i.user_id, i.date, 1)
+        if r.ok:
+            delete_unprocessed_visit(i.id)

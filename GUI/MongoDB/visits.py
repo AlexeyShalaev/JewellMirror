@@ -65,3 +65,28 @@ def delete_visit(id):
 # очистка Документа
 def visits_truncate():
     db.visits.drop()
+
+
+def get_unprocessed_visits() -> MongoDBResult:
+    res = db.unprocessed_visits.find()
+    if res:
+        visits = []
+        for i in list(res):
+            visits.append(UnprocessedVisit(i))
+        return MongoDBResult(True, visits)
+    else:
+        return MongoDBResult(False, [])
+
+
+def delete_unprocessed_visit(id):
+    db.unprocessed_visits.delete_one({
+        '_id': ObjectId(id)
+    })
+
+
+def get_unprocessed_visit(id) -> MongoDBResult:
+    visit = db.unprocessed_visits.find_one({'_id': ObjectId(id)})
+    if visit:
+        return MongoDBResult(True, UnprocessedVisit(visit))
+    else:
+        return MongoDBResult(False, None)

@@ -5,7 +5,8 @@ from bson.json_util import loads
 from GUI.MongoDB.logs import add_log
 from GUI.MongoDB.timetables import update_timetable, check_timetable_by_name, add_timetable
 from GUI.MongoDB.users import users_truncate, add_users
-from GUI.ext.api import get_users_from_api, get_courses_from_api
+from GUI.MongoDB.visits import get_unprocessed_visit, delete_unprocessed_visit
+from GUI.ext.api import get_users_from_api, get_courses_from_api, send_attendance
 from GUI.models.log import LogStatus, LogService
 
 
@@ -62,3 +63,16 @@ def update_courses_timetable():
     except Exception as ex:
         add_log(LogStatus.ERROR, LogService.GUI, ex)
     return False
+
+
+def handle_unprocessed_visit(id):
+    r = get_unprocessed_visit(id)
+    if not r.success:
+        return False
+    unprocessed_visit = r.data
+    r = send_attendance(unprocessed_visit.user_id, unprocessed_visit.date, 1)
+    if r.ok:
+        delete_unprocessed_visit(id)
+        return True
+    else:
+        return False

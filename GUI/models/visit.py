@@ -28,3 +28,17 @@ class Visit:
         self.visit_type = VisitType(data['visit_type'])
         self.courses = data['courses']
         self.date = tz.localize(data['date'])  # datetime.strptime(data['date'], "%d.%m.%Y %H:%M:%S")
+
+
+class UnprocessedVisit:
+    id: ObjectId  # ID курса
+    user_id: ObjectId  # ID пользователя
+    date: datetime  # дата
+
+    def __init__(self, data):
+        self.id = data['_id']
+        self.user_id = data['user_id']
+        self.date = tz.localize(data['date'])  # datetime.strptime(data['date'], "%d.%m.%Y %H:%M:%S")
+
+    def beauty_date(self):
+        return datetime.strftime(self.date, "%d.%m.%Y %H:%M:%S")

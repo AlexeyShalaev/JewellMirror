@@ -49,3 +49,10 @@ def add_visits(visits):
 # очистка Документа
 def truncate():
     db.visits.drop()
+
+
+def add_unprocessed_visit(user_id, date):
+    db.unprocessed_visits.insert_one({
+        "user_id": ObjectId(user_id),
+        "date": date
+    })

@@ -18,7 +18,8 @@ def shabbat_kabbalat():
         soup = BeautifulSoup(response.text, 'lxml')
         quote = soup.find('div', class_='one-activity__date-counter')
         remaining_seats = quote.find('b').text
-        return json.dumps({'success': True, 'seats': remaining_seats}), 200, {'ContentType': 'application/json'}
+        if int(remaining_seats) >= 0:
+            return json.dumps({'success': True, 'seats': remaining_seats}), 200, {'ContentType': 'application/json'}
     except Exception as ex:
         logger.error(ex)
     return json.dumps({'success': False}), 200, {'ContentType': 'application/json'}
