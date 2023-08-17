@@ -6,7 +6,7 @@
     <!-- css -->
     <link href="../assets/mirror/css/jewell-mirror.css" rel="stylesheet"/>
 </head>
-<body style="color: white;">
+<body id="mirror_body" style="color: white;">
 <div class="region fullscreen below">
     <div class="container"></div>
 </div>
@@ -19,11 +19,25 @@
 
     </div>
     <div class="region top right">
-        <div style="font-size: 30px;" class="container">
-            <div class="row" id="shabbat_start_time">Зажигание: {{ shabbat['candle'] }}</div>
-            <div class="row" id="shabbat_end_time">Авдала: {{ shabbat['havdalah'] }}</div>
-            <br>
-            <div class="container" id="kabbalat_shabbat"></div>
+        <div class="container">
+            <div class="mySlides fade">
+                <div style="font-size: 30px;" class="container">
+                    <br>
+                    <div class="row" id="shabbat_start_time">Зажигание: {{ shabbat['candle'] }}</div>
+                    <div class="row" id="shabbat_end_time">Авдала: {{ shabbat['havdalah'] }}</div>
+                </div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="container mb-2" id="kabbalat_shabbat_qr"></div>
+                <div class="container" style="font-size: 30px;" id="kabbalat_shabbat"></div>
+            </div>
+
+            <div class="mySlides fade">
+                 <div class="container mb-2" id="edu_qr"></div>
+                <div class="container" style="font-size: 30px;">Регистрируйся в системе</div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -31,7 +45,7 @@
     <div class="container"></div>
 </div>
 <div class="region middle center">
-    <div class="container" style="font-size: 30px;" id="center"></div>
+    <div class="container" style="font-size: 60px;" id="center"></div>
 </div>
 <div class="region lower third">
     <div class="container" id="bottom_center" style="font-size: 60px;"></div>
@@ -46,7 +60,7 @@
         <div class="container"></div>
     </div>
     <div class="region bottom right">
-        <div class="container"></div>
+        <div class="container" id="bottom_right"></div>
     </div>
 </div>
 <div class="region fullscreen above">
@@ -55,6 +69,8 @@
 
 <!-- js -->
 <script src="../assets/mirror/js/jquery-3.6.3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 <script src="../assets/mirror/js/main.js"></script>
+
 </body>
 </html>

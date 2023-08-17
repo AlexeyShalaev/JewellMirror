@@ -1,19 +1,14 @@
-from datetime import datetime
 from logging import getLogger
 
 from flask import *
-
 from flask_login import login_user, login_required, current_user, logout_user
 
 from GUI.MongoDB.logs import get_logs
-from GUI.MongoDB.users import get_users_by_role
-from GUI.MongoDB.visits import get_visits, get_unprocessed_visits
-from GUI.ext.data import manage_data, handle_unprocessed_visit
-from GUI.ext.user_login import UserLogin
 from GUI.ext import config
+from GUI.ext.data import manage_data
 from GUI.ext.terminal import get_camera_status, get_background_status, process_service
 from GUI.ext.tools import shabbat
-from GUI.models.user import Role
+from GUI.ext.user_login import UserLogin
 
 logger = getLogger(__name__)  # logging
 view = Blueprint('view', __name__, template_folder='templates', static_folder='assets')
@@ -33,49 +28,14 @@ def home():
                 process_service('start', request.form['service'])
             elif request.form['btn_service'] == 'update':
                 manage_data()
-            elif request.form['btn_service'] == 'handle_unprocessed_visit':
-                handle_unprocessed_visit(request.form['unprocessed_visit_id'])
         except Exception as ex:
             logger.error(ex)
-    visits = get_visits().data
-    users = get_users_by_role(Role.STUDENT).data
 
     logs = get_logs().data
     logs.sort(key=lambda x: x.date, reverse=True)
 
-    unprocessed_visits = get_unprocessed_visits().data
-    unprocessed_visits.sort(key=lambda x: x.date, reverse=True)
-
-    visits.sort(key=lambda x: x.date, reverse=True)
-    visits_json = []
-    users_dict = dict()
-
-    for user in users:
-        try:
-            users_dict[user.id] = {
-                'name': f'{user.first_name} {user.last_name}',
-                'visits': 0
-            }
-        except Exception:
-            pass
-
-    for visit in visits:
-        try:
-            js = {
-                'user_id': visit.user_id,
-                'type': visit.visit_type.value,
-                'date': datetime.strftime(visit.date, f'%d.%m.%Y %H:%M:%S'),
-                'courses': '/'.join(visit.courses),
-                'user': users_dict[visit.user_id]['name']
-            }
-            users_dict[visit.user_id]['visits'] += 1
-            visits_json.append(js)
-        except Exception:
-            pass
-
     return render_template("home.html",
-                           camera=get_camera_status(), background=get_background_status(),
-                           visits=visits_json, users=users_dict, logs=logs, unprocessed_visits=unprocessed_visits)
+                           camera=get_camera_status(), background=get_background_status(), logs=logs)
 
 
 # Уровень:              Авторизация

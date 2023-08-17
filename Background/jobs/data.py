@@ -14,7 +14,6 @@ from Background.models.log import LogStatus, LogService
 def truncating():
     if datetime.datetime.now().day == 1:
         # every month clear db
-        visits_truncate()
         logs_truncate()
 
 
@@ -23,8 +22,6 @@ def manage_data():
         add_log(LogStatus.WARNING, LogService.BACKGROUND, 'Users have not been updated.')
     if not update_courses_timetable():
         add_log(LogStatus.WARNING, LogService.BACKGROUND, 'The schedule has not been updated.')
-
-    handle_unprocessed_visits()
 
 
 def update_users():

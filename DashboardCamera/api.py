@@ -9,29 +9,23 @@ from DashboardCamera.config import load_config
 from DashboardCamera.models.log import LogStatus, LogService
 
 config = load_config()  # config
-attendance_url = f'{config.links.jewell}/api/attendance/update'
+attendance_visit_url = f'{config.links.jewell}/api/attendance/visit'
+qr_attendance_url = f'{config.links.jewell}/api/attendance/qrcode'
 jewell_token = config.api.jewell
 
 
-async def update_user_attendance(user_id, date, count):
-    try:
-        r = send_attendance(user_id, date, count)
-        if r.ok:
-            res = r.json()
-            if res['success']:
-                return
-        else:
-            add_unprocessed_visit(user_id, date)
-            add_log(LogStatus.WARNING, LogService.CAMERA, f"Couldn't update attendance for {user_id} {date} {count}")
-    except Exception as ex:
-        add_log(LogStatus.ERROR, LogService.CAMERA, ex)
-
-
-def send_attendance(user_id, date, count):
-    user_id = str(user_id)
+def send_attendance_visit(user_id, date):
     date = datetime.strftime(date, "%d.%m.%Y %H:%M:%S")
-    return requests.post(attendance_url,
+    return requests.post(attendance_visit_url,
                          json={"token": jewell_token,
-                               'user_id': user_id,
-                               'date': date,
-                               'count': count})
+                               'user_id': str(user_id),
+                               'date': date})
+
+
+def get_qr_visits_uri():
+    r = requests.post(qr_attendance_url, json={"token": jewell_token})
+    if r.ok:
+        res = r.json()
+        if res['success']:
+            return config.links.jewell + res['uri']
+    return None
