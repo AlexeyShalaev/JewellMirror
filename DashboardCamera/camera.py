@@ -1,6 +1,8 @@
 import os
 import sys
 
+from DashboardCamera.speech import say
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 import asyncio
@@ -28,6 +30,14 @@ VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
 MAX_HANDLING_FACES = 3
 
 
+def is_shabbat_time(current_time):
+    if ((current_time.weekday() == 4 and current_time.hour > 12) or
+            (current_time.weekday() == 5 and current_time.hour < 23)):
+        return True
+    else:
+        return False
+
+
 async def recognise_faces(websocket, path):
     video_capture = cv2.VideoCapture(0)
     last_user = {
@@ -39,6 +49,10 @@ async def recognise_faces(websocket, path):
     while video_capture.isOpened():
         try:
             now = datetime.now(tz)
+
+            if is_shabbat_time(now):
+                continue
+
             r = get_timetable_by_name('jewell')
             if r.success:
                 timetable = r.data.days
@@ -93,6 +107,7 @@ async def recognise_faces(websocket, path):
                                 message = f'{user.face_id.greeting}, {user.first_name}!\n'
                                 await websocket.send(json.dumps({'region': 'bottom_center', 'message': message}))
                                 await asyncio.sleep(0.5)
+                                say(message)
 
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     resp = send_attendance_visit(user.id, now)
@@ -112,6 +127,7 @@ async def recognise_faces(websocket, path):
                                                 await websocket.send(json.dumps({'region': 'center',
                                                                                  'message': visit_msg}))
                                                 await asyncio.sleep(1)
+                                                say(visit_msg)
 
                                 break
         except Exception as ex:

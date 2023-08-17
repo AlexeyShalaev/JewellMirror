@@ -3,3 +3,5 @@ asyncio
 pymongo
 opencv-python
 face_recognition
+gtts
+pygame
