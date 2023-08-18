@@ -41,6 +41,7 @@ class Config:  # class config
     db: DbConfig
     api: API
     links: Links
+    songs_path: str
 
 
 def load_config(path: str = ".env"):
@@ -63,5 +64,6 @@ def load_config(path: str = ".env"):
         ),
         links=Links(
             jewell=env.str('URL_JEWELL')
-        )
+        ),
+        songs_path=env.str('SONGS_PATH')
     )

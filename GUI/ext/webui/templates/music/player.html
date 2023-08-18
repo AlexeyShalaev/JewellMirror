@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>Mirror Player</title>
+    <!-- css -->
+    <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'>
+    <link rel='stylesheet' href='assets/music/css/mediaelementplayer.min.css'>
+    <link href="assets/music/css/style.css" rel="stylesheet"/>
+
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="assets/admin/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/admin/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <!--end::Global Stylesheets Bundle-->
+    <link href="assets/admin/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
+
+
+</head>
+<body>
+<div class="contain">
+    <div class="container">
+        <div class="music-player">
+            <div class="cover">
+                <img id="current_song_image" src="" alt="">
+            </div>
+            <div class="titre">
+                <h3 id="current_song_author"></h3>
+                <h1 id="current_song_title"></h1>
+            </div>
+            <div class="lecteur">
+                <div id="mep_0" class="mejs__container fc-media mejs__audio" tabindex="0" role="application"
+                     aria-label="Audio Player" style="width: 100%; height: 40px; min-width: 461px;">
+                    <div class="mejs__inner">
+                        <div class="mejs__mediaelement">
+
+                        </div>
+                        <div class="mejs__layers">
+                            <div class="mejs__poster mejs__layer"
+                                 style="display: none; width: 100%; height: 40px;"></div>
+                        </div>
+                        <div class="mejs__controls">
+                            <div id="current_song_mode" class="mejs__button mejs__playpause-button mejs__play">
+                                <button type="button" aria-controls="mep_0" title="Play" aria-label="Play"
+                                        tabindex="0" data-delay-click="1000" data-method="change_song_mode"></button>
+                            </div>
+                            <div class="mejs__time" role="timer" aria-live="off">
+                                <span class="mejs__currenttime" id="current_song_time"></span><span></span><span
+                                    id="current_song_duration" class="mejs__duration"></span>
+                            </div>
+                            <div class="mejs__time-rail"><span class="mejs__time-total mejs__time-slider"><span
+                                    class="mejs__time-buffering" style="display: none;"></span><span
+                                    class="mejs__time-loaded"></span><span id="current_song_progress"
+                                                                           class="mejs__time-current"></span><span
+                                    class="mejs__time-hovered no-hover"></span><span class="mejs__time-handle"><span
+                                    class="mejs__time-handle-content"></span></span><span class="mejs__time-float"
+                                                                                          style="display: none; left: 0px;"><span
+                                    class="mejs__time-float-current">00:00</span><span
+                                    class="mejs__time-float-corner"></span></span></span></div>
+                            <div class="mejs__button mejs__forward-button">
+                                <img data-delay-click="1000" data-method="play_skip_song"
+                                     src="assets/music/media/forward-solid.svg" alt="Next Song">
+                            </div>
+                            <div id="current_song_mute" class="mejs__button mejs__volume-button mejs__mute">
+                                <button type="button" aria-controls="mep_0" title="Mute" aria-label="Mute"
+                                        tabindex="0" data-delay-click="1000" data-method="change_song_mute"></button>
+                            </div>
+                            <a class="mejs__horizontal-volume-slider"
+                               aria-label="Volume Slider" aria-valuemin="0" aria-valuemax="100" role="slider">
+                                <div class="mejs__horizontal-volume-total">
+                                    <input class="mejs__horizontal-volume-current" type="range" min="0" max="100"
+                                           value="100" id="mp_volume" onchange="handleVolumeChange(this.value)">
+                                </div>
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="kt_datatable_songs_queue" class="table table-striped table-row-bordered gy-5 mt-5 mb-10">
+            <thead>
+            <tr class="fw-bold fs-6 text-gray-800">
+                <th><img src="assets/music/media/plus-solid.svg" alt="Add Song" data-bs-toggle="modal"
+                         data-bs-target="#kt_modal_add_song"></th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Duration</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="kt_modal_add_song">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавьте песню в очередь</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                     aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <form method="post">
+                    <table id="songs_table" class="table table-striped" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Author</th>
+                            <th>Duration</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- js -->
+<script src="assets/js/jquery-3.6.3.min.js"></script>
+<script src="assets/music/js/script.js"></script>
+<!--begin::Global Javascript Bundle(used by all pages)-->
+<script src="assets/admin/plugins/global/plugins.bundle.js"></script>
+<script src="assets/admin/js/scripts.bundle.js"></script>
+<!--end::Global Javascript Bundle-->
+<script src="assets/admin/plugins/custom/datatables/datatables.bundle.js"></script>
+
+<script>
+
+
+    $(document).ready(function () {
+        render();
+    });
+
+    function render() {
+        $('#songs_table').DataTable().destroy();
+        const table = $('#songs_table').DataTable({
+                data: {{songs | safe}},
+                columns: [
+                    {
+                        data: "_id",
+                        render: function (obj_id) {
+                            const id = obj_id["$oid"]; // Получаем значение поля "$oid"
+
+                            // Создаем элемент кнопки "Добавить"
+                            const addButton = document.createElement("button");
+                            addButton.textContent = "+";
+                            addButton.className = "btn btn-primary";
+
+                            // Устанавливаем стили через свойства и атрибуты
+                            addButton.style.fontSize = "18px"; // Увеличение размера шрифта
+                            addButton.style.padding = "5px 10px"; // Уменьшение размера кнопки
+
+                            // Добавляем атрибуты к кнопке
+                            addButton.setAttribute("type", "submit");
+                            addButton.setAttribute("name", "btn_music_player");
+                            addButton.setAttribute("value", id); // Используем id как значение атрибута
+
+                            // Возвращаем HTML код в виде строки
+                            return addButton.outerHTML;
+                        }
+                    },
+                    {data: "name"},
+                    {data: "author"},
+                    {
+                        data: "duration",
+                        render: beauty_seconds
+                    },
+                ],
+                responsive:
+                    true,
+                lengthMenu:
+                    [10, 25, 50, 100, 300],
+                buttons:
+                    true,
+                /*exporting */
+                dom:
+                    'Blfrtip',
+                order:
+                    [[1, 'asc']],
+                buttons:
+                    [],
+                language:
+                    {
+                        "lengthMenu":
+                            "Показывать _MENU_ записей",
+                        "zeroRecords":
+                            "Ничего не найдено",
+                        "info":
+                            "Показано _PAGE_ из _PAGES_",
+                        "infoEmpty":
+                            "Нет доступных записей",
+                        "infoFiltered":
+                            "(отфильтровано из _MAX_  общих записей)",
+                        "paginate":
+                            {
+                                "first":
+                                    "Первый",
+                                "last":
+                                    "Последний",
+                                "next":
+                                    "Следующий",
+                                "previous":
+                                    "Предыдущий"
+                            }
+                        ,
+                        "loadingRecords":
+                            "Загрузка...",
+                        "processing":
+                            "",
+                        "search":
+                            "Искать:",
+                        "zeroRecords":
+                            "Совпадающих записей не найдено"
+                    }
+            })
+        ;
+
+        document.getElementsByClassName("dt-buttons btn-group flex-wrap")[0].classList.add("mb-3");
+    }
+</script>
+
+</body>
+</html>

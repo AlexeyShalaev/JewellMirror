@@ -3,6 +3,7 @@
 .env
 venv1/
 venv2/
+songs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
