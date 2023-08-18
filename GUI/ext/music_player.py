@@ -9,7 +9,7 @@ from GUI.models.song import Song
 
 def check_permission(func):
     def wrapper(self, *args, **kwargs):
-        if self.admin_permission:  # and is_free_time():
+        if self.admin_permission and is_free_time():
             return func(self, *args, **kwargs)
 
     return wrapper
@@ -130,7 +130,10 @@ class MusicPlayer:
 
     @staticmethod
     def get_song_duration(song_path):
-        # Загрузка аудиофайла
-        sound = pygame.mixer.Sound(song_path)
-        # Получение длительности аудиофайла в секундах
-        return sound.get_length()
+        try:
+            # Загрузка аудиофайла
+            sound = pygame.mixer.Sound(song_path)
+            # Получение длительности аудиофайла в секундах
+            return int(sound.get_length())
+        except:
+            return 0

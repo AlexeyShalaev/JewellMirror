@@ -57,11 +57,16 @@ def get_song_by_name(name) -> MongoDBResult:
 
 # добавление песни
 def add_song(name, author, duration):
-    db.songs.insert_one({
+    return db.songs.insert_one({
         "name": name,
         "author": author,
         "duration": duration
     })
+
+
+# добавление песни
+def update_song(id, key, value):
+    return db.songs.update_one({'_id': ObjectId(id)}, {"$set": {key: value}})
 
 
 # добавление песен

@@ -5,7 +5,7 @@ from flask import *
 from flask_login import login_user, login_required, current_user, logout_user
 
 from GUI.MongoDB.logs import get_logs
-from GUI.MongoDB.songs import get_songs, delete_song
+from GUI.MongoDB.songs import get_songs, delete_song, add_song, update_song
 from GUI.ext import config
 from GUI.ext.data import manage_data
 from GUI.ext.music_player import MusicPlayer
@@ -112,6 +112,30 @@ def mirror_admin_player():
                         break
 
                 mp.reload()
+            elif request.form['btn_player'] == 'add_song':
+                # Получение данных из формы
+                song_name = request.form['song_name']
+                song_author = request.form['song_author']
+                mp3_file = request.files['mp3_file']
+                image_file = request.files['image_file']
+
+                song_id = str(add_song(song_name, song_author, 1).inserted_id)
+
+                # Сохранение файлов
+                mp3_path = os.path.join(mp.music_folder, 'audios', f'{song_id}.mp3')
+                mp3_file.save(mp3_path)
+                duration = mp.get_song_duration(mp3_path)
+                if duration <= 0:
+                    delete_song(song_id)
+                    if os.path.exists(mp3_path):
+                        os.remove(mp3_path)
+                else:
+                    update_song(song_id, 'duration', duration)
+
+                    if image_file and image_file.filename:
+                        file_extension = os.path.splitext(image_file.filename)[-1]
+                        image_path = os.path.join(mp.music_folder, 'images', f'{song_id}.{file_extension}')
+                        image_file.save(image_path)
 
         except Exception as ex:
             logger.error(ex)
