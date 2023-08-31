@@ -19,8 +19,9 @@ music_player = MusicPlayer()
 # Установка события для окончания трека
 
 def looped_music():
+    time.sleep(5)
     while True:
-        requests.get('http://127.0.0.1/music/update_state')
+        requests.get('http://127.0.0.1:5000/music/update_state')
         time.sleep(1)  # Задержка на 1 секунду
 
 
