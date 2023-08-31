@@ -23,6 +23,7 @@ app.register_blueprint(mirror_route)
 app.register_blueprint(music_route)
 app.register_blueprint(api)
 app.config['SECRET_KEY'] = config.flask.secret_key
+app.jinja_env.globals['mirror_ip'] = config.mirror_ip
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'mirror.login'
@@ -37,7 +38,7 @@ def load_user(id):
 
 def main():
     logger.info("Starting app")
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=80)
 
 
 if __name__ == "__main__":

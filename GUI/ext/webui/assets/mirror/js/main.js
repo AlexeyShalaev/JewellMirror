@@ -7,7 +7,6 @@ $(document).ready(function () {
 
     generateQR('kabbalat_shabbat_qr', 'https://jewellclub.ru/shabbat/kabbalat-shabbat/', 250);
     generateQR('edu_qr', 'https://edu.jewellclub.ru/', 250);
-    generateQR('mirror_player', 'http://192.168.1.65:5000/music/', 250);
     showSlides();
 
     const socket = new WebSocket('ws://localhost:8080');

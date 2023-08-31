@@ -20,7 +20,7 @@ music_player = MusicPlayer()
 
 def looped_music():
     while True:
-        requests.get('http://127.0.0.1:5000/music/update_state')
+        requests.get('http://127.0.0.1/music/update_state')
         time.sleep(1)  # Задержка на 1 секунду
 
 

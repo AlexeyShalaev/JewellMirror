@@ -42,6 +42,7 @@ class Config:  # class config
     api: API
     links: Links
     songs_path: str
+    mirror_ip: str
 
 
 def load_config(path: str = ".env"):
@@ -65,5 +66,6 @@ def load_config(path: str = ".env"):
         links=Links(
             jewell=env.str('URL_JEWELL')
         ),
-        songs_path=env.str('SONGS_PATH')
+        songs_path=env.str('SONGS_PATH'),
+        mirror_ip=env.str('MIRROR_IP')
     )
