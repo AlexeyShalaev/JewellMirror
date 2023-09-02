@@ -26,6 +26,10 @@
     * Пользователи
     * Расписание
 
+### :four:: MusicPlayer
+* Озвучка текста
+* Музыкальный плеер
+
 ## Комплектущие
 
 - [Процессор AMD Ryzen 3 3200G](https://market.yandex.ru/product--protsessor-amd-ryzen-3-3200g-am4-4-x-3600-mgts/508267136?glfilter=37693330%3A38326419_100709217342&sku=100709217342&cpa=1)
@@ -117,6 +121,24 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
+4. mirror_mp
+```
+[Unit]
+Description=MusicPlayer
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/jewell/Desktop/JewellMirror/MusicPlayer
+ExecStart=/usr/bin/python3 /home/jewell/Desktop/JewellMirror/MusicPlayer/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ### Bash скрипты (```sh *.sh```)
 
 1. start.sh
@@ -126,6 +148,7 @@ WantedBy=multi-user.target
 sudo systemctl start mirror_gui.service
 sudo systemctl start mirror_background.service
 sudo systemctl start mirror_camera.service
+sudo systemctl start mirror_mp.service
 ```
 
 2. stop.sh
@@ -135,4 +158,5 @@ sudo systemctl start mirror_camera.service
 sudo systemctl stop mirror_gui.service
 sudo systemctl stop mirror_background.service
 sudo systemctl stop mirror_camera.service
+sudo systemctl stop mirror_mp.service
 ```
