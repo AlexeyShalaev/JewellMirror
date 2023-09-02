@@ -6,7 +6,7 @@ import io
 pygame.mixer.init()
 
 
-def say(text):
+async def say(text):
     # Создаем объект gTTS
     tts = gTTS(text, lang='ru')
 
@@ -15,9 +15,10 @@ def say(text):
     tts.write_to_fp(audio_stream)
     audio_stream.seek(0)
 
-    pygame.mixer.music.load(audio_stream)
-    pygame.mixer.music.play()
+    voice_channel = pygame.mixer.Channel(1)
+    voice_sound = pygame.mixer.Sound(audio_stream)
 
-    # Ожидаем завершения воспроизведения
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
+    voice_channel.play(voice_sound)
+    while voice_channel.get_busy():
+        import asyncio
+        await asyncio.sleep(1)

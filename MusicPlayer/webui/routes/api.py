@@ -1,4 +1,5 @@
 import os
+import threading
 from logging import getLogger
 
 import requests_html
@@ -95,8 +96,8 @@ def api_add_song():
 
 
 @api.route('/speech/say', methods=["POST"])
-def api_speech_say():
+async def api_speech_say():
     token = request.json['token']
     if token == api_token:
-        say(request.json['text'])
+        await say(request.json['text'])
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
