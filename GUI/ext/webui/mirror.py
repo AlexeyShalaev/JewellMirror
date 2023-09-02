@@ -7,8 +7,8 @@ from flask_login import login_user, login_required, current_user, logout_user
 from GUI.MongoDB.logs import get_logs
 from GUI.MongoDB.songs import get_songs, delete_song, add_song, update_song
 from GUI.ext import config
+from GUI.ext.api import mp_change_admin_permission, mp_reload, mp_delete_song, mp_add_song, mp_get_admin_permission
 from GUI.ext.data import manage_data
-from GUI.ext.music_player import MusicPlayer
 from GUI.ext.terminal import get_camera_status, get_background_status, process_service
 from GUI.ext.tools import shabbat
 from GUI.ext.user_login import UserLogin
@@ -85,33 +85,16 @@ def mirror_interface():
 @mirror.route('/player', methods=["GET", "POST"])
 @login_required
 def mirror_admin_player():
-    mp = MusicPlayer()
-
     if request.method == "POST":
         try:
             if request.form['btn_player'] == 'stop':
-                mp.admin_permission = False
+                mp_change_admin_permission(False)
             elif request.form['btn_player'] == 'run':
-                mp.admin_permission = True
+                mp_change_admin_permission(True)
             elif request.form['btn_player'] == 'reload':
-                mp.reload()
+                mp_reload()
             elif request.form['btn_player'] == 'delete_song':
-                song_id = request.form['song_id']
-                delete_song(song_id)
-
-                # Удалить mp3 файл
-                mp3_file_path = os.path.join(mp.music_folder, 'audios', f'{song_id}.mp3')
-                if os.path.exists(mp3_file_path):
-                    os.remove(mp3_file_path)
-
-                # Удалить изображение
-                images_dir = os.path.join(mp.music_folder, 'images')
-                for file in os.listdir(images_dir):
-                    if song_id == file.split('.')[0]:
-                        os.remove(os.path.join(images_dir, song_id))
-                        break
-
-                mp.reload()
+                mp_delete_song(request.form['song_id'])
             elif request.form['btn_player'] == 'add_song':
                 # Получение данных из формы
                 song_name = request.form['song_name']
@@ -119,25 +102,11 @@ def mirror_admin_player():
                 mp3_file = request.files['mp3_file']
                 image_file = request.files['image_file']
 
-                song_id = str(add_song(song_name, song_author, 1).inserted_id)
-
-                # Сохранение файлов
-                mp3_path = os.path.join(mp.music_folder, 'audios', f'{song_id}.mp3')
-                mp3_file.save(mp3_path)
-                duration = mp.get_song_duration(mp3_path)
-                if duration <= 0:
-                    delete_song(song_id)
-                    if os.path.exists(mp3_path):
-                        os.remove(mp3_path)
-                else:
-                    update_song(song_id, 'duration', duration)
-
-                    if image_file and image_file.filename:
-                        file_extension = os.path.splitext(image_file.filename)[-1]
-                        image_path = os.path.join(mp.music_folder, 'images', f'{song_id}.{file_extension}')
-                        image_file.save(image_path)
+                mp_add_song(song_name, song_author, mp3_file, image_file)
 
         except Exception as ex:
             logger.error(ex)
 
-    return render_template("mirror/player.html", permission=mp.admin_permission, songs=get_songs().data)
+    return render_template("mirror/player.html",
+                           permission=mp_get_admin_permission(),
+                           songs=get_songs().data)

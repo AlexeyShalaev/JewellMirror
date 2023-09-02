@@ -3,8 +3,6 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-from DashboardCamera.speech import say
-
 import asyncio
 import json
 from datetime import datetime, timedelta
@@ -17,7 +15,7 @@ from pytz import timezone
 from DashboardCamera.MongoDB.logs import add_log
 from DashboardCamera.MongoDB.timetables import get_timetable_by_name
 from DashboardCamera.MongoDB.users import get_users
-from DashboardCamera.api import send_attendance_visit, get_qr_visits_uri
+from DashboardCamera.api import send_attendance_visit, get_qr_visits_uri, say_text
 from DashboardCamera.models.log import LogStatus, LogService
 from DashboardCamera.models.user import Role, Reward, Sex
 from DashboardCamera.models.visit import VisitType
@@ -106,9 +104,10 @@ async def recognise_faces(websocket, path):
                                     "date": now
                                 }
                                 message = f'{user.face_id.greeting}, {user.first_name}!\n'
+
                                 await websocket.send(json.dumps({'region': 'bottom_center', 'message': message}))
+                                say_text(message)
                                 await asyncio.sleep(0.5)
-                                say(message)
 
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     resp = send_attendance_visit(user.id, now)
@@ -127,8 +126,8 @@ async def recognise_faces(websocket, path):
 
                                                 await websocket.send(json.dumps({'region': 'center',
                                                                                  'message': visit_msg}))
+                                                say_text(visit_msg)
                                                 await asyncio.sleep(1)
-                                                say(visit_msg)
 
                                 break
         except Exception as ex:

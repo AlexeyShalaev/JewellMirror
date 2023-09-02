@@ -2,9 +2,9 @@ import os
 
 import pygame
 
-from GUI.ext import config
-from GUI.ext.tools import is_free_time, singleton
-from GUI.models.song import Song
+from MusicPlayer.misc import config
+from MusicPlayer.misc.tools import is_free_time, singleton
+from MusicPlayer.models.song import Song
 
 
 def check_permission(func):
@@ -39,6 +39,7 @@ class MusicPlayer:
     def reload(self):
         # Остановить воспроизведение музыки
         pygame.mixer.music.stop()
+        pygame.mixer.music.unload()
 
         # Очистить очередь песен и сбросить состояние
         self.music_queue = []
@@ -100,10 +101,12 @@ class MusicPlayer:
         self.is_muted = False
         pygame.mixer.music.set_volume(volume)
 
+    @check_permission
     def skip_song(self):
         pygame.mixer.music.stop()
         # play_loop -> gona play next track
 
+    @check_permission
     def play_loop(self):
         for event in pygame.event.get():
             if event.type == self.END_OF_TRACK:

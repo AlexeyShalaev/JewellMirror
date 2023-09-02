@@ -1,17 +1,16 @@
-import json
 from datetime import datetime
 
 import requests
 
-from DashboardCamera.MongoDB.logs import add_log
-from DashboardCamera.MongoDB.visits import add_unprocessed_visit
 from DashboardCamera.config import load_config
-from DashboardCamera.models.log import LogStatus, LogService
 
 config = load_config()  # config
 attendance_visit_url = f'{config.links.jewell}/api/attendance/visit'
 qr_attendance_url = f'{config.links.jewell}/api/attendance/qrcode'
+say_text_url = f'{config.links.music_player}/api/speech/say'
+
 jewell_token = config.api.jewell
+mp_token = config.api.music_player
 
 
 def send_attendance_visit(user_id, date):
@@ -29,3 +28,10 @@ def get_qr_visits_uri():
         if res['success']:
             return config.links.jewell + res['uri']
     return None
+
+
+def say_text(text):
+    requests.post(say_text_url,
+                  json={"token": mp_token,
+                        'text': text},
+                  timeout=0.5)

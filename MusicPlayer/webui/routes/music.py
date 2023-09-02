@@ -1,5 +1,4 @@
 import os
-import random
 import threading
 import time
 from logging import getLogger
@@ -7,11 +6,11 @@ from logging import getLogger
 import requests
 from flask import *
 
-from GUI.MongoDB.songs import get_songs, get_song_by_id, get_songs_json
-from GUI.ext.music_player import MusicPlayer
+from MusicPlayer.MongoDB.songs import get_song_by_id, get_songs_json
+from MusicPlayer.misc.music_player import MusicPlayer
 
 logger = getLogger(__name__)  # logging
-music = Blueprint('music', __name__, url_prefix='/music', template_folder='templates', static_folder='assets')
+music = Blueprint('music', __name__, url_prefix='/music', template_folder='../templates', static_folder='../assets')
 
 music_player = MusicPlayer()
 
@@ -21,7 +20,7 @@ music_player = MusicPlayer()
 def looped_music():
     time.sleep(5)
     while True:
-        requests.get('http://127.0.0.1:5000/music/update_state')
+        requests.get('http://127.0.0.1:5050/music/update_state')
         time.sleep(1)  # Задержка на 1 секунду
 
 
@@ -62,6 +61,7 @@ def music_song_image(song_id):
                 break
     except Exception as ex:
         pass
+
     return send_file(os.path.join(directory, filename))
 
 
