@@ -1,8 +1,6 @@
 import os
-import threading
 from logging import getLogger
 
-import requests_html
 from flask import *
 
 from MusicPlayer import config
