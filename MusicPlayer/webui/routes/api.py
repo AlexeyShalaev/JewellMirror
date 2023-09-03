@@ -73,7 +73,7 @@ def api_add_song():
         song_name = request.form['song_name']
         song_author = request.form['song_author']
         mp3_file = request.files['mp3_file']
-        image_file = request.files['image_file']
+        image_file = request.files.get('image_file', None)
 
         song_id = str(add_song(song_name, song_author, 1).inserted_id)
 
