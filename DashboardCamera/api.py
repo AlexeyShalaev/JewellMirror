@@ -31,7 +31,10 @@ def get_qr_visits_uri():
 
 
 def say_text(text):
-    requests.post(say_text_url,
-                  json={"token": mp_token,
-                        'text': text},
-                  timeout=0.5)
+    try:
+        requests.post(say_text_url,
+                      json={"token": mp_token,
+                            'text': text},
+                      timeout=1)
+    except:
+        pass

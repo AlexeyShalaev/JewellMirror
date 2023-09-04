@@ -1,5 +1,8 @@
 import os
 import sys
+import threading
+import time
+from collections import deque
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
@@ -27,6 +30,9 @@ VISIT_RANGE_MINUTES = 15  # minutes
 VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
 MAX_HANDLING_FACES = 3
 
+# Общая очередь для хранения данных, отправляемых клиентам
+data_queue = deque()
+
 
 def is_shabbat_time(current_time):
     if ((current_time.weekday() == 4 and current_time.hour > 12) or
@@ -36,86 +42,67 @@ def is_shabbat_time(current_time):
         return False
 
 
-async def recognise_faces(websocket, path):
-    video_capture = cv2.VideoCapture(0)
+def get_timetable_message(date):
+    res_timetable_message = ''
+    r = get_timetable_by_name('jewell')
+    if r.success:
+        timetable = r.data.days
+        for i in timetable[date.weekday()]:
+            start_time = date.replace(hour=i['hours'], minute=i['minutes'], second=0)
+            if (date < start_time and (start_time - date).seconds < VISIT_RANGE_SECONDS) or (
+                    date > start_time and (date - start_time).seconds < VISIT_RANGE_SECONDS):
+                seconds_left = ((start_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - date).seconds
+                mins = str(seconds_left // 60)
+                secs = str(seconds_left % 60)
+                timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
+                res_timetable_message += f'Приход на {"/".join(i["courses"])}: {timeleft}\n'
+            else:
+                end_time = start_time + timedelta(hours=COURSE_TIME)
+                if (date < end_time and (end_time - date).seconds < VISIT_RANGE_SECONDS) or (
+                        date > end_time and (date - end_time).seconds < VISIT_RANGE_SECONDS):
+                    seconds_left = ((end_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - date).seconds
+                    mins = str(seconds_left // 60)
+                    secs = str(seconds_left % 60)
+                    timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
+                    res_timetable_message += f'Уход с {"/".join(i["courses"])}: {timeleft}\n'
+    return res_timetable_message
+
+
+def recognise_faces():
     last_user = {
         "id": None,
         "date": None
     }
-    last_qr_code_timestamp = datetime.now(tz)
-    last_timetable_message_flag = False
+    video_capture = cv2.VideoCapture(0)
     while video_capture.isOpened():
         try:
             now = datetime.now(tz)
-
-            if is_shabbat_time(now):
-                continue
-
-            r = get_timetable_by_name('jewell')
-            if r.success:
-                timetable = r.data.days
-                timetable_message = ''
-                for i in timetable[now.weekday()]:
-                    start_time = now.replace(hour=i['hours'], minute=i['minutes'], second=0)
-                    if (now < start_time and (start_time - now).seconds < VISIT_RANGE_SECONDS) or (
-                            now > start_time and (now - start_time).seconds < VISIT_RANGE_SECONDS):
-                        seconds_left = ((start_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - now).seconds
-                        mins = str(seconds_left // 60)
-                        secs = str(seconds_left % 60)
-                        timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
-                        timetable_message += f'До окончания прихода на {"/".join(i["courses"])}: {timeleft}\n'
-                    else:
-                        end_time = start_time + timedelta(hours=COURSE_TIME)
-                        if (now < end_time and (end_time - now).seconds < VISIT_RANGE_SECONDS) or (
-                                now > end_time and (now - end_time).seconds < VISIT_RANGE_SECONDS):
-                            seconds_left = ((end_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - now).seconds
-                            mins = str(seconds_left // 60)
-                            secs = str(seconds_left % 60)
-                            timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
-                            timetable_message += f'До окончания ухода с {"/".join(i["courses"])}: {timeleft}\n'
-                if timetable_message != '':
-                    last_timetable_message_flag = True
-                    await websocket.send(json.dumps({'region': 'bottom_left', 'message': timetable_message}))
-                    await asyncio.sleep(0.5)
-
-                    if (now - last_qr_code_timestamp).seconds > 10:
-                        uri = get_qr_visits_uri()
-                        if uri:
-                            last_qr_code_timestamp = now
-                            await websocket.send(json.dumps({'region': 'qr_code', 'message': uri}))
-                            await asyncio.sleep(0.5)
-                elif last_timetable_message_flag:
-                    last_timetable_message_flag = False
-                    await websocket.send(json.dumps({'region': 'bottom_left', 'message': ''}))
-                    await websocket.send(json.dumps({'region': 'qr_code', 'message': ''}))
-                    await asyncio.sleep(0.5)
-                ret, frame = video_capture.read()  # take image from camera
-                if ret:
-                    encodings = face_recognition.face_encodings(frame)  # find faces in frame
-                    for user_encoding in encodings[:MAX_HANDLING_FACES]:
-                        for user in get_users().data:
-                            if len(user.face_id.encodings) == 0:
+            ret, frame = video_capture.read()  # take an image from the camera
+            if ret:
+                encodings = face_recognition.face_encodings(frame)  # find faces in the frame
+                for user_encoding in encodings[:MAX_HANDLING_FACES]:
+                    for user in get_users().data:
+                        if len(user.face_id.encodings) == 0:
+                            continue
+                        # Compare the face encoding with encodings from the database
+                        matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
+                                                                          tolerance=0.5)
+                        # Count the number of successful matches
+                        successful_matches = sum(matching_results)
+                        # Calculate the percentage of successful matches
+                        match_percentage = successful_matches / len(user.face_id.encodings)
+                        if match_percentage >= 0.5:
+                            if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
                                 continue
-                            # Сравниваем кодировку лица с кодировками из базы данных
-                            matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
-                                                                              tolerance=0.5)
-                            # Подсчитываем количество успешных совпадений
-                            successful_matches = sum(matching_results)
-                            # Вычисляем процент успешных совпадений
-                            match_percentage = successful_matches / len(user.face_id.encodings)
-                            if match_percentage >= 0.5:
-                                if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
-                                    continue
-                                last_user = {
-                                    "id": user.id,
-                                    "date": now
-                                }
-                                message = f'{user.face_id.greeting}, {user.first_name}!\n'
+                            last_user = {
+                                "id": user.id,
+                                "date": now
+                            }
+                            message = f'{user.face_id.greeting}, {user.first_name}!\n'
+                            data_queue.appendleft({'region': 'bottom_center', 'message': message})
+                            say_text(message)
 
-                                await websocket.send(json.dumps({'region': 'bottom_center', 'message': message}))
-                                say_text(message)
-                                await asyncio.sleep(0.5)
-
+                            if get_timetable_message(now):
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     resp = send_attendance_visit(user.id, now)
                                     if resp.ok:
@@ -131,20 +118,82 @@ async def recognise_faces(websocket, path):
                                                         visit_msg += f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} на занятие {'/'.join(i['courses'])}"
                                                     visit_msg += '\n'
 
-                                                await websocket.send(json.dumps({'region': 'center',
-                                                                                 'message': visit_msg}))
+                                                data_queue.appendleft({'region': 'center',
+                                                                       'message': visit_msg})
                                                 say_text(visit_msg)
-                                                await asyncio.sleep(1)
 
-                                break
+                            break
         except Exception as ex:
+            print(ex)
             # add_log(LogStatus.ERROR, LogService.CAMERA, ex)
-            await asyncio.sleep(1)
 
 
-server = websockets.serve(recognise_faces, "localhost", 8080)
+def display_courses_qr_code():
+    last_qr_code_timestamp = datetime.now(tz)
+    while True:
+        try:
+            now = datetime.now(tz)
+            if get_timetable_message(now):
+                if (now - last_qr_code_timestamp).seconds > 10:
+                    uri = get_qr_visits_uri()
+                    if uri:
+                        last_qr_code_timestamp = now
+                        data_queue.appendleft({'region': 'qr_code', 'message': uri})
+                        time.sleep(1)
+        except Exception as ex:
+            # print(ex)
+            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
-asyncio.get_event_loop().run_until_complete(server)
-asyncio.get_event_loop().run_forever()
 
-add_log(LogStatus.ERROR, LogService.CAMERA, 'CAMERA service stopped.')
+def display_timetable():
+    last_timetable_message_flag = False
+    timetable_message = ''
+    while True:
+        try:
+            now = datetime.now(tz)
+            if is_shabbat_time(now):
+                continue
+
+            timetable_message = get_timetable_message(now)
+            if timetable_message:
+                last_timetable_message_flag = True
+                data_queue.append({'region': 'bottom_left', 'message': timetable_message})
+            elif last_timetable_message_flag:
+                last_timetable_message_flag = False
+                data_queue.append({'region': 'bottom_left', 'message': ''})
+                data_queue.append({'region': 'qr_code', 'message': ''})
+            time.sleep(0.5)
+        except Exception as ex:
+            # print(ex)
+            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+
+
+async def sockets_producer(websocket, path):
+    while True:
+        try:
+            # Получаем данные из общей очереди
+            if data_queue:
+                data = data_queue.popleft()
+                await websocket.send(json.dumps(data))
+                await asyncio.sleep(0.5)
+        except Exception as ex:
+            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+
+
+if __name__ == "__main__":
+    # Создаем отдельные потоки для каждой функции
+    timetable_thread = threading.Thread(target=display_timetable)
+    qr_code_thread = threading.Thread(target=display_courses_qr_code)
+    faces_thread = threading.Thread(target=recognise_faces)
+
+    # Запускаем потоки
+    timetable_thread.start()
+    qr_code_thread.start()
+    faces_thread.start()
+
+    # Запускаем WebSocket-сервер в основном потоке
+    server = websockets.serve(sockets_producer, "localhost", 8080)
+    asyncio.get_event_loop().run_until_complete(server)
+    asyncio.get_event_loop().run_forever()
+
+    add_log(LogStatus.ERROR, LogService.CAMERA, 'CAMERA service stopped.')
