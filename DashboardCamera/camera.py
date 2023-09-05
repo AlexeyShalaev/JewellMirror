@@ -115,7 +115,7 @@ def recognise_faces():
                                                     if i['visit_type'] == VisitType.ENTER.value:
                                                         visit_msg += f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(i['courses'])}"
                                                     elif i['visit_type'] == VisitType.EXIT.value:
-                                                        visit_msg += f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} на занятие {'/'.join(i['courses'])}"
+                                                        visit_msg += f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(i['courses'])}"
                                                     visit_msg += '\n'
 
                                                 data_queue.appendleft({'region': 'center',
