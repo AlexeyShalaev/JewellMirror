@@ -56,7 +56,7 @@ function displayDateTime() {
     let day = now.getDay();
     let hours = now.getHours();
 
-    if ((day === 5 && hours >= 0) || (day === 6 && hours < 23)) {
+    if ((day === 5 && hours > 12) || (day === 6 && hours < 23)) {
         $("#mirror_body").fadeOut();
         isShabbat = true;
         return;

@@ -77,6 +77,8 @@ def recognise_faces():
     while video_capture.isOpened():
         try:
             now = datetime.now(tz)
+            if is_shabbat_time(now):
+                continue
             ret, frame = video_capture.read()  # take an image from the camera
             if ret:
                 encodings = face_recognition.face_encodings(frame)  # find faces in the frame
@@ -133,6 +135,8 @@ def display_courses_qr_code():
     while True:
         try:
             now = datetime.now(tz)
+            if is_shabbat_time(now):
+                continue
             if get_timetable_message(now):
                 if (now - last_qr_code_timestamp).seconds > 10:
                     uri = get_qr_visits_uri()
