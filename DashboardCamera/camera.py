@@ -26,7 +26,7 @@ from DashboardCamera.models.visit import VisitType
 tz = timezone('Europe/Moscow')
 ONE_DAY = 24 * 60 * 60  # seconds
 COURSE_TIME = 2  # hours
-VISIT_RANGE_MINUTES = 15  # minutes
+VISIT_RANGE_MINUTES = 30  # minutes
 VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
 MAX_HANDLING_FACES = 3
 
