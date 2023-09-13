@@ -2,7 +2,9 @@ from datetime import datetime
 
 import requests
 
+from DashboardCamera.MongoDB.logs import add_log
 from DashboardCamera.config import load_config
+from DashboardCamera.models.log import LogStatus, LogService
 
 config = load_config()  # config
 attendance_visit_url = f'{config.links.jewell}/api/attendance/visit'

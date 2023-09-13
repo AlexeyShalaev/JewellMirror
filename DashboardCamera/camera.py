@@ -88,7 +88,7 @@ def recognise_faces():
                             continue
                         # Compare the face encoding with encodings from the database
                         matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
-                                                                          tolerance=0.4)
+                                                                          tolerance=0.45)
                         # Count the number of successful matches
                         successful_matches = sum(matching_results)
                         # Calculate the percentage of successful matches
