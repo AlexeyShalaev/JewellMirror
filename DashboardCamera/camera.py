@@ -51,7 +51,7 @@ def get_timetable_message(date):
             start_time = date.replace(hour=i['hours'], minute=i['minutes'], second=0)
             if (date < start_time and (start_time - date).seconds < VISIT_RANGE_MINUTES_30_MIN) or (
                     date > start_time and (date - start_time).seconds < VISIT_RANGE_MINUTES_15_MIN):
-                seconds_left = ((start_time + timedelta(minutes=VISIT_RANGE_MINUTES_15_MIN)) - date).seconds
+                seconds_left = ((start_time + timedelta(seconds=VISIT_RANGE_MINUTES_15_MIN)) - date).seconds
                 mins = str(seconds_left // 60)
                 secs = str(seconds_left % 60)
                 timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
@@ -60,7 +60,7 @@ def get_timetable_message(date):
                 end_time = start_time + timedelta(hours=COURSE_TIME)
                 if (date < end_time and (end_time - date).seconds < VISIT_RANGE_MINUTES_15_MIN) or (
                         date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_30_MIN):
-                    seconds_left = ((end_time + timedelta(minutes=VISIT_RANGE_MINUTES_30_MIN)) - date).seconds
+                    seconds_left = ((end_time + timedelta(seconds=VISIT_RANGE_MINUTES_30_MIN)) - date).seconds
                     mins = str(seconds_left // 60)
                     secs = str(seconds_left % 60)
                     timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
