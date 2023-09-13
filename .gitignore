@@ -4,6 +4,7 @@
 venv1/
 venv2/
 songs
+DashboardCamera/comes.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
