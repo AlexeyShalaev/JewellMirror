@@ -26,8 +26,8 @@ from DashboardCamera.models.visit import VisitType
 tz = timezone('Europe/Moscow')
 ONE_DAY = 24 * 60 * 60  # seconds
 COURSE_TIME = 2  # hours
-VISIT_RANGE_MINUTES = 30  # minutes
-VISIT_RANGE_SECONDS = VISIT_RANGE_MINUTES * 60  # seconds
+VISIT_RANGE_MINUTES_30_MIN = 30 * 60  # seconds
+VISIT_RANGE_MINUTES_15_MIN = 15 * 60  # seconds
 MAX_HANDLING_FACES = 3
 
 # Общая очередь для хранения данных, отправляемых клиентам
@@ -49,18 +49,18 @@ def get_timetable_message(date):
         timetable = r.data.days
         for i in timetable[date.weekday()]:
             start_time = date.replace(hour=i['hours'], minute=i['minutes'], second=0)
-            if (date < start_time and (start_time - date).seconds < VISIT_RANGE_SECONDS) or (
-                    date > start_time and (date - start_time).seconds < VISIT_RANGE_SECONDS):
-                seconds_left = ((start_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - date).seconds
+            if (date < start_time and (start_time - date).seconds < VISIT_RANGE_MINUTES_30_MIN) or (
+                    date > start_time and (date - start_time).seconds < VISIT_RANGE_MINUTES_15_MIN):
+                seconds_left = ((start_time + timedelta(minutes=VISIT_RANGE_MINUTES_15_MIN)) - date).seconds
                 mins = str(seconds_left // 60)
                 secs = str(seconds_left % 60)
                 timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
                 res_timetable_message += f'Приход на {"/".join(i["courses"])}: {timeleft}\n'
             else:
                 end_time = start_time + timedelta(hours=COURSE_TIME)
-                if (date < end_time and (end_time - date).seconds < VISIT_RANGE_SECONDS) or (
-                        date > end_time and (date - end_time).seconds < VISIT_RANGE_SECONDS):
-                    seconds_left = ((end_time + timedelta(minutes=VISIT_RANGE_MINUTES)) - date).seconds
+                if (date < end_time and (end_time - date).seconds < VISIT_RANGE_MINUTES_15_MIN) or (
+                        date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_30_MIN):
+                    seconds_left = ((end_time + timedelta(minutes=VISIT_RANGE_MINUTES_30_MIN)) - date).seconds
                     mins = str(seconds_left // 60)
                     secs = str(seconds_left % 60)
                     timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
@@ -88,7 +88,7 @@ def recognise_faces():
                             continue
                         # Compare the face encoding with encodings from the database
                         matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
-                                                                          tolerance=0.5)
+                                                                          tolerance=0.4)
                         # Count the number of successful matches
                         successful_matches = sum(matching_results)
                         # Calculate the percentage of successful matches
@@ -100,6 +100,11 @@ def recognise_faces():
                                 "id": user.id,
                                 "date": now
                             }
+
+                            with open('comes.txt', "a") as f:
+                                f.write(
+                                    f"{now.strftime('%d.%m.%Y %H:%M:%S')} - {user.id} - {user.last_name} - {user.first_name}\n")
+
                             message = f'{user.face_id.greeting}, {user.first_name}!\n'
                             data_queue.appendleft({'region': 'bottom_center', 'message': message})
                             say_text(message)
@@ -110,19 +115,23 @@ def recognise_faces():
                                     if resp.ok:
                                         res = resp.json()
                                         if res['success']:
-                                            messages = res['data']
-                                            if messages:
-                                                visit_msg = ''
-                                                for i in messages:
-                                                    if i['visit_type'] == VisitType.ENTER.value:
-                                                        visit_msg += f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(i['courses'])}"
-                                                    elif i['visit_type'] == VisitType.EXIT.value:
-                                                        visit_msg += f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(i['courses'])}"
-                                                    visit_msg += '\n'
-
+                                            visit_res = res['data']
+                                            visit_msg = ''
+                                            if visit_res['visit_type'] == VisitType.ENTER.value:
+                                                visit_msg = f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(i['courses'])}"
+                                            elif visit_res['visit_type'] == VisitType.EXIT.value:
+                                                visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(i['courses'])}"
+                                            data_queue.appendleft({'region': 'center',
+                                                                   'message': visit_msg})
+                                            say_text(visit_msg)
+                                        else:
+                                            visit_msg = res['data']
+                                            if visit_msg:
                                                 data_queue.appendleft({'region': 'center',
                                                                        'message': visit_msg})
-                                                say_text(visit_msg)
+                                    else:
+                                        add_log(LogStatus.ERROR, LogService.CAMERA,
+                                                f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
 
                             break
         except Exception as ex:
@@ -138,14 +147,13 @@ def display_courses_qr_code():
             if is_shabbat_time(now):
                 continue
             if get_timetable_message(now):
-                if (now - last_qr_code_timestamp).seconds > 10:
+                if (now - last_qr_code_timestamp).seconds > 12:
                     uri = get_qr_visits_uri()
                     if uri:
                         last_qr_code_timestamp = now
                         data_queue.appendleft({'region': 'qr_code', 'message': uri})
                         time.sleep(1)
         except Exception as ex:
-            # print(ex)
             add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
 
