@@ -7,10 +7,19 @@ from GUI.config import load_config
 from GUI.models.log import LogStatus, LogService
 
 config = load_config()  # config
+
 users_url = f'{config.links.jewell}/api/users'
 courses_url = f'{config.links.jewell}/api/courses'
 attendance_url = f'{config.links.jewell}/api/attendance/update'
+
+admin_permission_url = f'{config.links.music_player}/api/player/admin_permission'
+mp_reload_url = f'{config.links.music_player}/api/player/reload'
+delete_song_url = f'{config.links.music_player}/api/songs/delete'
+add_song_url = f'{config.links.music_player}/api/songs/add'
+get_admin_permission_url = f'{config.links.music_player}/api/player/admin_permission/get'
+
 jewell_token = config.api.jewell
+mp_token = config.api.music_player
 
 
 def get_users_from_api() -> (bool, ...):
@@ -43,3 +52,38 @@ def send_attendance(user_id, date, count):
                                'user_id': user_id,
                                'date': date,
                                'count': count})
+
+
+def mp_change_admin_permission(admin_permission):
+    return requests.post(admin_permission_url,
+                         json={"token": mp_token,
+                               'admin_permission': admin_permission})
+
+
+def mp_reload():
+    return requests.post(mp_reload_url,
+                         json={"token": mp_token})
+
+
+def mp_delete_song(song_id):
+    return requests.post(delete_song_url,
+                         json={"token": mp_token, 'song_id': song_id})
+
+
+def mp_add_song(song_name, song_author, mp3_file, image_file):
+    return requests.post(add_song_url, data={
+        'token': mp_token,
+        'song_name': song_name,
+        'song_author': song_author,
+    }, files={
+        'mp3_file': (mp3_file.filename, mp3_file.stream, mp3_file.content_type),
+        'image_file': (image_file.filename, image_file.stream, image_file.content_type)
+    })
+
+
+def mp_get_admin_permission():
+    try:
+        r = requests.get(get_admin_permission_url)
+        return r.json()['data']
+    except:
+        return False

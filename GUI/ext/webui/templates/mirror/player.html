@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <base href="">
+    <meta charset="utf-8"/>
+    <title>Player | Mirror Dashboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" href="assets/admin/media/logos/favicon.ico"/>
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="assets/admin/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/admin/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <!--end::Global Stylesheets Bundle-->
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" data-sidebar="on" class="header-fixed header-tablet-and-mobile-fixed sidebar-enabled">
+
+<div class="d-flex flex-column flex-column-fluid mt-5">
+    <!--begin::Content-->
+    <div class="content fs-6 d-flex flex-column-fluid" id="kt_content">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row g-0 g-xl-5 g-xxl-8">
+                <div class="col-xxl-6">
+                    <!--begin::Stats Widget 6-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin::Top-->
+                            <div class="d-flex bg-light-primary card-rounded flex-grow-1">
+                                <!--begin::Section-->
+                                <div class="py-10 ps-7">
+                                    <!--begin::Text-->
+                                    <div class="">
+                                        <span class="text-primary fs-1 d-block mb-n1">Музыкальный плеер</span>
+                                        <span class="font-weight-light text-gray-800">Остановка запретит управлять плеером студентам</span>
+                                    </div>
+                                    <!--end::Text-->
+
+                                    <form method="post">
+                                        {% if permission %}
+                                        <button type="submit" name="btn_player" value="stop"
+                                                class="btn btn-danger btn-sm mt-3">
+                                            Остановить
+                                        </button>
+                                        {% else %}
+                                        <button type="submit" name="btn_player" value="run"
+                                                class="btn btn-success btn-sm mt-3">
+                                            Запустить
+                                        </button>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                                <!--end::Section-->
+
+                                <!--begin::Pic-->
+                                <div class="position-relative bgi-no-repeat bgi-size-contain bgi-position-y-bottom bgi-position-x-end mt-6 flex-grow-1"
+                                     style="background-image:url('assets/admin/media/illustrations/illustration-1.png')">
+                                </div>
+                                <!--end::Pic-->
+                            </div>
+                            <!--end::Top-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 6-->
+                </div>
+
+                <div class="col-xxl-6">
+                    <!--begin::Stats Widget 6-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin::Top-->
+                            <div class="d-flex bg-light-primary card-rounded flex-grow-1">
+                                <!--begin::Section-->
+                                <div class="py-10 ps-7">
+                                    <!--begin::Text-->
+                                    <div class="">
+                                        <span class="text-primary fs-1 d-block mb-n1">Плейлист</span>
+                                        <span class="font-weight-light text-gray-800">Перезапустите плеер с очисткой плейлиста</span>
+                                    </div>
+                                    <!--end::Text-->
+
+                                    <form method="post">
+                                        <button type="submit" name="btn_player" value="reload"
+                                                class="btn btn-dark btn-sm mt-3">
+                                            Перезапуск
+                                        </button>
+                                    </form>
+                                </div>
+                                <!--end::Section-->
+
+                                <!--begin::Pic-->
+                                <div class="position-relative bgi-no-repeat bgi-size-contain bgi-position-y-bottom bgi-position-x-end mt-6 me-2 flex-grow-1"
+                                     style="background-image:url('assets/music/media/playlist.png')">
+                                </div>
+                                <!--end::Pic-->
+                            </div>
+                            <!--end::Top-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 6-->
+                </div>
+            </div>
+
+            <div class="row g-0 g-xl-5 g-xxl-8">
+                <div class="col-xl-4">
+                    <!--begin::List Widget 1-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Header-->
+                        <div class="card-header align-items-center border-0 mt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="fw-bolder text-dark fs-3">Добавить песню</span>
+                                <span class="text-muted mt-2 fw-bold fs-6">Загрузите mp3 файл</span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+
+                        <!--begin::Body-->
+                        <div class="card-body pt-3">
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="song_name" class="form-label">Название трека</label>
+                                    <input type="text" class="form-control" id="song_name" name="song_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="song_author" class="form-label">Автор трека</label>
+                                    <input type="text" class="form-control" id="song_author" name="song_author"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mp3_file" class="form-label">MP3 файл</label>
+                                    <input type="file" class="form-control" id="mp3_file" name="mp3_file" accept=".mp3"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image_file" class="form-label">Картинка/Постер/Обложка песни</label>
+                                    <input type="file" class="form-control" id="image_file" name="image_file"
+                                           accept="image/*">
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-2" name="btn_player" value="add_song">Добавить песню</button>
+                            </form>
+
+                        </div>
+                        <!--end: Card Body-->
+                    </div>
+                    <!--end::List Widget 1-->
+                </div>
+
+                <div class="col-xl-8">
+                    <!--begin::Table Widget 2-->
+                    <div class="card card-stretch mb-5 mb-xxl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bolder text-dark fs-3">Библиотека песен</span>
+                                <span class="text-muted mt-2 fw-bold fs-6">{{songs | length}}</span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-0 mt-n3">
+                            <!--begin::Table-->
+                            <div class="table-responsive">
+                                <table class="table table-borderless align-middle">
+                                    <thead>
+                                    <tr>
+                                        <th class="p-0 w-50px"></th>
+                                        <th class="p-0 min-w-150px"></th>
+                                        <th class="p-0 min-w-70px"></th>
+                                        <th class="p-0 min-w-50px"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for song in songs %}
+                                    <tr>
+                                        <td class="px-0 py-3">
+                                            <div class="symbol symbol-55px mt-1 me-5">
+                                        <span class="symbol-label bg-light-primary align-items-end">
+                                            <img alt="Logo" src="{{mp_ip}}/music/songs/images/{{song.id}}"
+                                                 class="mh-40px">
+                                        </span>
+                                            </div>
+                                        </td>
+                                        <td class="px-0">
+                                            <a class="text-gray-800 fw-bolder text-hover-primary fs-6">{{song.name}}</a>
+                                            <span class="text-muted fw-bold d-block mt-1">{{song.author}}</span>
+                                        </td>
+                                        <td class="text-end">
+                                    <span class="fw-bolder text-primary" name="song_duration">
+                                        {{ song.duration }}
+                                    </span>
+                                        </td>
+                                        <td class="text-end pe-0">
+                                            <form method="post">
+                                                <input type="hidden" name="song_id" value="{{song.id}}">
+                                                <button onclick="return confirm('Вы точно хотите удалить песню из библиотеки навсегда?')"
+                                                        name="btn_player" value="delete_song" type="submit"
+                                                        class="btn btn-icon btn-bg-light btn-active-primary btn-sm">
+                                                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Arrow-right.svg-->
+                                                    X
+                                                    <!--end::Svg Icon-->                                    </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Table Widget 2-->
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Content-->
+</div>
+
+<!--begin::Javascript-->
+<!--begin::Global Javascript Bundle(used by all pages)-->
+<script src="assets/admin/plugins/global/plugins.bundle.js"></script>
+<script src="assets/admin/js/scripts.bundle.js"></script>
+<!--end::Global Javascript Bundle-->
+
+<script>
+    // Поиск всех элементов с именем "duration"
+    const durationElements = document.getElementsByName("song_duration");
+
+    // Применение функции beauty_seconds к содержимому элементов
+    durationElements.forEach(element => {
+        const totalSeconds = parseInt(element.textContent, 10);
+        element.textContent = beauty_seconds(totalSeconds);
+    });
+
+    function beauty_seconds(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+
+        return `${minutes}:${seconds}`;
+    }
+</script>
+
+<!--end::Javascript-->
+</body>
+<!--end::Body-->
+</html>

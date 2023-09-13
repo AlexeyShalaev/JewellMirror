@@ -10,7 +10,7 @@ from flask_login import *
 
 from ext.user_login import UserLogin
 from ext.webui.api import api
-from ext.webui.view import view
+from ext.webui.mirror import mirror as mirror_route
 from config import load_config
 
 config = load_config()  # config
@@ -18,12 +18,14 @@ logger = getLogger(__name__)  # logging
 
 # flask
 app = Flask(config.flask.app_name)
-app.register_blueprint(view)
+app.register_blueprint(mirror_route)
 app.register_blueprint(api)
 app.config['SECRET_KEY'] = config.flask.secret_key
+app.jinja_env.globals['mirror_ip'] = config.mirror_ip
+app.jinja_env.globals['mp_ip'] = config.links.music_player
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'view.login'
+login_manager.login_view = 'mirror.login'
 login_manager.login_message = "Авторизуйтесь для доступа к этой странице"
 login_manager.login_message_category = "info"
 
@@ -35,7 +37,7 @@ def load_user(id):
 
 def main():
     logger.info("Starting app")
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
 
 
 if __name__ == "__main__":

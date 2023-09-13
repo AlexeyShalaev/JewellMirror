@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Jewell Mirror</title>
     <!-- css -->
-    <link href="../assets/mirror/css/jewell-mirror.css" rel="stylesheet"/>
+    <link href="assets/mirror/css/jewell-mirror.css" rel="stylesheet"/>
 </head>
 <body id="mirror_body" style="color: white;">
 <div class="region fullscreen below">
@@ -34,8 +34,13 @@
             </div>
 
             <div class="mySlides fade">
-                 <div class="container mb-2" id="edu_qr"></div>
+                <div class="container mb-2" id="edu_qr"></div>
                 <div class="container" style="font-size: 30px;">Регистрируйся в системе</div>
+            </div>
+
+            <div class="mySlides fade">
+                <div class="container mb-2" id="mirror_player"></div>
+                <div class="container" style="font-size: 30px;">Включай музыку на зеркале</div>
             </div>
 
         </div>
@@ -68,9 +73,12 @@
 </div>
 
 <!-- js -->
-<script src="../assets/mirror/js/jquery-3.6.3.min.js"></script>
-<script src="../assets/mirror/js/qrious.min.js"></script>
-<script src="../assets/mirror/js/main.js"></script>
+<script src="assets/js/jquery-3.6.3.min.js"></script>
+<script src="assets/mirror/js/qrious.min.js"></script>
+<script src="assets/mirror/js/main.js"></script>
+<script>
+    generateQR('mirror_player', 'http://{{mirror_ip}}:5050/music/', 250);
+</script>
 
 </body>
 </html>

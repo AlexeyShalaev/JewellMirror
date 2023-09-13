@@ -1,3 +1,4 @@
+from GUI.models.timetable import Timetable
 from . import db, MongoDBResult
 
 """
@@ -12,6 +13,14 @@ def check_timetable_by_name(name: str) -> bool:
     if res:
         return True
     return False
+
+
+def get_timetable_by_name(name: str) -> MongoDBResult:
+    timetable = db.timetables.find_one({'name': name})
+    if timetable:
+        return MongoDBResult(True, Timetable(timetable))
+    else:
+        return MongoDBResult(False, None)
 
 
 def add_timetable(name, days):

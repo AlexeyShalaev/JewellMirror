@@ -27,11 +27,13 @@ class DbConfig:
 @dataclass
 class API:
     jewell: str
+    music_player: str
 
 
 @dataclass
 class Links:
     jewell: str
+    music_player: str
 
 
 @dataclass
@@ -41,6 +43,7 @@ class Config:  # class config
     db: DbConfig
     api: API
     links: Links
+    mirror_ip: str
 
 
 def load_config(path: str = ".env"):
@@ -59,9 +62,12 @@ def load_config(path: str = ".env"):
         db=DbConfig(
             conn=env.str('DB_CONN')
         ), api=API(
-            jewell=env.str('JEWELL_TOKEN')
+            jewell=env.str('JEWELL_TOKEN'),
+            music_player=env.str('MP_TOKEN')
         ),
         links=Links(
-            jewell=env.str('URL_JEWELL')
-        )
+            jewell=env.str('URL_JEWELL'),
+            music_player=env.str('URL_MP')
+        ),
+        mirror_ip=env.str('MIRROR_IP')
     )
