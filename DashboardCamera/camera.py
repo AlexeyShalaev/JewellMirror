@@ -88,7 +88,7 @@ def recognise_faces():
                             continue
                         # Compare the face encoding with encodings from the database
                         matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
-                                                                          tolerance=0.45)
+                                                                          tolerance=0.5)
                         # Count the number of successful matches
                         successful_matches = sum(matching_results)
                         # Calculate the percentage of successful matches
@@ -111,28 +111,30 @@ def recognise_faces():
 
                             if get_timetable_message(now):
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
-                                    resp = send_attendance_visit(user.id, now)
-                                    if resp.ok:
-                                        res = resp.json()
-                                        if res['success']:
-                                            visit_res = res['data']
-                                            visit_msg = ''
-                                            if visit_res['visit_type'] == VisitType.ENTER.value:
-                                                visit_msg = f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(visit_res['courses'])}"
-                                            elif visit_res['visit_type'] == VisitType.EXIT.value:
-                                                visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(visit_res['courses'])}"
-                                            data_queue.appendleft({'region': 'center',
-                                                                   'message': visit_msg})
-                                            say_text(visit_msg)
-                                        else:
-                                            visit_msg = res['data']
-                                            if visit_msg:
+                                    try:
+                                        resp = send_attendance_visit(user.id, now)
+                                        if resp.ok:
+                                            res = resp.json()
+                                            if res['success']:
+                                                visit_res = res['data']
+                                                visit_msg = ''
+                                                if visit_res['visit_type'] == VisitType.ENTER.value:
+                                                    visit_msg = f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(visit_res['courses'])}"
+                                                elif visit_res['visit_type'] == VisitType.EXIT.value:
+                                                    visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(visit_res['courses'])}"
                                                 data_queue.appendleft({'region': 'center',
                                                                        'message': visit_msg})
-                                    else:
-                                        add_log(LogStatus.ERROR, LogService.CAMERA,
-                                                f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
-
+                                                say_text(visit_msg)
+                                            else:
+                                                visit_msg = res['data']
+                                                if visit_msg:
+                                                    data_queue.appendleft({'region': 'center',
+                                                                           'message': visit_msg})
+                                        else:
+                                            add_log(LogStatus.ERROR, LogService.CAMERA,
+                                                    f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
+                                    except Exception as ex:
+                                        add_log(LogStatus.ERROR, LogService.CAMERA, ex)
                             break
         except Exception as ex:
             print(ex)
@@ -154,7 +156,8 @@ def display_courses_qr_code():
                         data_queue.appendleft({'region': 'qr_code', 'message': uri})
                         time.sleep(1)
         except Exception as ex:
-            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+            print(ex)
+            # add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
 
 def display_timetable():
