@@ -105,10 +105,6 @@ def recognise_faces():
                                 f.write(
                                     f"{now.strftime('%d.%m.%Y %H:%M:%S')} - {user.id} - {user.last_name} - {user.first_name}\n")
 
-                            message = f'{user.face_id.greeting}, {user.first_name}!\n'
-                            data_queue.appendleft({'region': 'bottom_center', 'message': message})
-                            say_text(message)
-
                             if get_timetable_message(now):
                                 if user.role == Role.STUDENT and user.reward != Reward.NULL:
                                     try:
@@ -135,6 +131,10 @@ def recognise_faces():
                                                     f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
                                     except Exception as ex:
                                         add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+                            else:
+                                message = f'{user.face_id.greeting}, {user.first_name}!\n'
+                                data_queue.appendleft({'region': 'bottom_center', 'message': message})
+                                say_text(message)
                             break
         except Exception as ex:
             print(ex)
@@ -190,7 +190,7 @@ async def sockets_producer(websocket, path):
             if data_queue:
                 data = data_queue.popleft()
                 await websocket.send(json.dumps(data))
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.25)
         except Exception as ex:
             add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
