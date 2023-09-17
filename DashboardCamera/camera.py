@@ -120,7 +120,7 @@ def recognise_faces():
                                                     visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(visit_res['courses'])}"
                                                 data_queue.appendleft({'region': 'center',
                                                                        'message': visit_msg})
-                                                say_text(visit_msg)
+                                                # say_text(visit_msg)
                                             else:
                                                 visit_msg = res['data']
                                                 if visit_msg:
