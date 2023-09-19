@@ -24,7 +24,6 @@ from DashboardCamera.models.user import Role, Reward, Sex
 from DashboardCamera.models.visit import VisitType
 
 tz = timezone('Europe/Moscow')
-ONE_DAY = 24 * 60 * 60  # seconds
 COURSE_TIME = 2  # hours
 VISIT_RANGE_MINUTES_30_MIN = 30 * 60  # seconds
 VISIT_RANGE_MINUTES_15_MIN = 15 * 60  # seconds
