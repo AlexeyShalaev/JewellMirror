@@ -27,7 +27,7 @@ tz = timezone('Europe/Moscow')
 COURSE_TIME = 2  # hours
 VISIT_RANGE_MINUTES_30_MIN = 30 * 60  # seconds
 VISIT_RANGE_MINUTES_15_MIN = 15 * 60  # seconds
-MAX_HANDLING_FACES = 3
+MAX_HANDLING_FACES = 2
 
 # Общая очередь для хранения данных, отправляемых клиентам
 data_queue = deque()
@@ -87,12 +87,12 @@ def recognise_faces():
                             continue
                         # Compare the face encoding with encodings from the database
                         matching_results = face_recognition.compare_faces(user.face_id.encodings, user_encoding,
-                                                                          tolerance=0.5)
+                                                                          tolerance=0.45)
                         # Count the number of successful matches
                         successful_matches = sum(matching_results)
                         # Calculate the percentage of successful matches
                         match_percentage = successful_matches / len(user.face_id.encodings)
-                        if match_percentage >= 0.5:
+                        if match_percentage >= 0.7:
                             if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
                                 continue
                             last_user = {
