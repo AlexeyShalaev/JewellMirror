@@ -92,7 +92,7 @@ def recognise_faces():
                         successful_matches = sum(matching_results)
                         # Calculate the percentage of successful matches
                         match_percentage = successful_matches / len(user.face_id.encodings)
-                        if match_percentage >= 0.7:
+                        if match_percentage >= 0.5:
                             if last_user['id'] == user.id and (now - last_user['date']).seconds <= 5:
                                 continue
                             last_user = {
