@@ -25,6 +25,7 @@ from DashboardCamera.models.visit import VisitType
 
 tz = timezone('Europe/Moscow')
 COURSE_TIME = 2  # hours
+VISIT_RANGE_MINUTES_45_MIN = 45 * 60  # seconds
 VISIT_RANGE_MINUTES_30_MIN = 30 * 60  # seconds
 VISIT_RANGE_MINUTES_15_MIN = 15 * 60  # seconds
 MAX_HANDLING_FACES = 2
@@ -58,8 +59,8 @@ def get_timetable_message(date):
             else:
                 end_time = start_time + timedelta(hours=COURSE_TIME)
                 if (date < end_time and (end_time - date).seconds < VISIT_RANGE_MINUTES_15_MIN) or (
-                        date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_30_MIN):
-                    seconds_left = ((end_time + timedelta(seconds=VISIT_RANGE_MINUTES_30_MIN)) - date).seconds
+                        date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_45_MIN):
+                    seconds_left = ((end_time + timedelta(seconds=VISIT_RANGE_MINUTES_45_MIN)) - date).seconds
                     mins = str(seconds_left // 60)
                     secs = str(seconds_left % 60)
                     timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
@@ -126,7 +127,7 @@ def recognise_faces():
                                     except Exception as ex:
                                         add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
-                            message = f'{user.face_id.greeting}, {user.first_name}!\n'
+                            message = f'{user.face_id.greeting}, {user.first_name} {user.last_name}!\n'
                             data_queue.appendleft({'region': 'bottom_center', 'message': message})
                             say_text(message)
 
@@ -144,7 +145,7 @@ def display_courses_qr_code():
             if is_shabbat_time(now):
                 continue
             if get_timetable_message(now):
-                if (now - last_qr_code_timestamp).seconds > 12:
+                if (now - last_qr_code_timestamp).seconds > 20:
                     uri = get_qr_visits_uri()
                     if uri:
                         last_qr_code_timestamp = now

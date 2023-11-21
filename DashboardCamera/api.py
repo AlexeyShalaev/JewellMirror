@@ -17,10 +17,15 @@ mp_token = config.api.music_player
 
 def send_attendance_visit(user_id, date):
     date = datetime.strftime(date, "%d.%m.%Y %H:%M:%S")
-    return requests.post(attendance_visit_url,
+    r = requests.post(attendance_visit_url,
                          json={"token": jewell_token,
                                'user_id': str(user_id),
                                'date': date})
+    try:
+        add_log(LogStatus.INFO, LogService.CAMERA, f'{r.ok} {r.text} {r.json()}')
+    except Exception as ex:
+        print(ex)
+    return r
 
 
 def get_qr_visits_uri():
