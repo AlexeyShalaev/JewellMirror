@@ -127,7 +127,7 @@ def recognise_faces():
                                     except Exception as ex:
                                         add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
-                            message = f'{user.face_id.greeting}, {user.first_name} {user.last_name}!\n'
+                            message = f'{user.face_id.greeting}, {user.first_name}!\n'
                             data_queue.appendleft({'region': 'bottom_center', 'message': message})
                             say_text(message)
 
