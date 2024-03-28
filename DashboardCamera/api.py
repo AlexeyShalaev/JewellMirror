@@ -35,7 +35,8 @@ def get_qr_visits_uri():
         if res['success']:
             return config.links.jewell + res['uri']
     else:
-        add_log(LogStatus.ERROR, LogService.CAMERA, 'Не удалось получить QR код для посещаемости')
+        pass
+        # add_log(LogStatus.ERROR, LogService.CAMERA, 'Не удалось получить QR код для посещаемости')
     return None
 
 

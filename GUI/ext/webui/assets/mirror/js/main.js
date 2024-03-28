@@ -26,7 +26,17 @@ $(document).ready(function () {
                 generateQR('bottom_right', js['message'], 200);
             }
         } else {
-            document.getElementById(js['region']).innerText = js['message'];
+            if (js['region'] === 'bottom_center' && 'user_id' in js) {
+                const timestamp = new Date().getTime(); // Get current timestamp
+                const animation_url = `https://edu.jewellclub.ru/api/animation/${js['user_id']}?_=${timestamp}`;
+                document.getElementById(js['region']).innerHTML = `
+                 <img src="${animation_url}" style="border: none;">
+                  <br>
+                  ${js['message']}
+                 `;
+            } else {
+                document.getElementById(js['region']).innerText = js['message'];
+            }
 
             if (js['region'] === 'center' || js['region'] === 'bottom_center') {
                 await new Promise(resolve => setTimeout(function () {

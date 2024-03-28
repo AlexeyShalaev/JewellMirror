@@ -128,7 +128,7 @@ def recognise_faces():
                                         add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
                             message = f'{user.face_id.greeting}, {user.first_name}!\n'
-                            data_queue.appendleft({'region': 'bottom_center', 'message': message})
+                            data_queue.appendleft({'region': 'bottom_center', 'message': message, 'user_id': str(user.id)})
                             say_text(message)
 
                             break
