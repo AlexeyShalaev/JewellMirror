@@ -24,11 +24,11 @@ from DashboardCamera.models.user import Role, Reward, Sex
 from DashboardCamera.models.visit import VisitType
 
 tz = timezone('Europe/Moscow')
-ONE_DAY = 24 * 60 * 60  # seconds
 COURSE_TIME = 2  # hours
+VISIT_RANGE_MINUTES_45_MIN = 45 * 60  # seconds
 VISIT_RANGE_MINUTES_30_MIN = 30 * 60  # seconds
 VISIT_RANGE_MINUTES_15_MIN = 15 * 60  # seconds
-MAX_HANDLING_FACES = 3
+MAX_HANDLING_FACES = 2
 
 # Общая очередь для хранения данных, отправляемых клиентам
 data_queue = deque()
@@ -59,8 +59,8 @@ def get_timetable_message(date):
             else:
                 end_time = start_time + timedelta(hours=COURSE_TIME)
                 if (date < end_time and (end_time - date).seconds < VISIT_RANGE_MINUTES_15_MIN) or (
-                        date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_30_MIN):
-                    seconds_left = ((end_time + timedelta(seconds=VISIT_RANGE_MINUTES_30_MIN)) - date).seconds
+                        date > end_time and (date - end_time).seconds < VISIT_RANGE_MINUTES_45_MIN):
+                    seconds_left = ((end_time + timedelta(seconds=VISIT_RANGE_MINUTES_45_MIN)) - date).seconds
                     mins = str(seconds_left // 60)
                     secs = str(seconds_left % 60)
                     timeleft = f'{mins}:{(2 - len(secs)) * "0" + secs}'
@@ -101,37 +101,35 @@ def recognise_faces():
                                 "date": now
                             }
 
-                            with open('comes.txt', "a") as f:
-                                f.write(
-                                    f"{now.strftime('%d.%m.%Y %H:%M:%S')} - {user.id} - {user.last_name} - {user.first_name}\n")
+                            if get_timetable_message(now):
+                                if user.role == Role.STUDENT and user.reward != Reward.NULL:
+                                    try:
+                                        resp = send_attendance_visit(user.id, now)
+                                        if resp.ok:
+                                            res = resp.json()
+                                            if res['success']:
+                                                visit_res = res['data']
+                                                visit_msg = ''
+                                                if visit_res['visit_type'] == VisitType.ENTER.value:
+                                                    visit_msg = f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(visit_res['courses'])}"
+                                                elif visit_res['visit_type'] == VisitType.EXIT.value:
+                                                    visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(visit_res['courses'])}"
+                                                data_queue.appendleft({'region': 'center',
+                                                                       'message': visit_msg})
+                                            else:
+                                                visit_msg = res['data']
+                                                if visit_msg:
+                                                    data_queue.appendleft({'region': 'center',
+                                                                           'message': visit_msg})
+                                        else:
+                                            add_log(LogStatus.ERROR, LogService.CAMERA,
+                                                    f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
+                                    except Exception as ex:
+                                        add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
                             message = f'{user.face_id.greeting}, {user.first_name}!\n'
                             data_queue.appendleft({'region': 'bottom_center', 'message': message})
                             say_text(message)
-
-                            if get_timetable_message(now):
-                                if user.role == Role.STUDENT and user.reward != Reward.NULL:
-                                    resp = send_attendance_visit(user.id, now)
-                                    if resp.ok:
-                                        res = resp.json()
-                                        if res['success']:
-                                            visit_res = res['data']
-                                            visit_msg = ''
-                                            if visit_res['visit_type'] == VisitType.ENTER.value:
-                                                visit_msg = f"{user.first_name} {'пришла' if user.sex == Sex.FEMALE else 'пришел'} на занятие {'/'.join(visit_res['courses'])}"
-                                            elif visit_res['visit_type'] == VisitType.EXIT.value:
-                                                visit_msg = f"{user.first_name} {'ушла' if user.sex == Sex.FEMALE else 'ушел'} c занятия {'/'.join(visit_res['courses'])}"
-                                            data_queue.appendleft({'region': 'center',
-                                                                   'message': visit_msg})
-                                            say_text(visit_msg)
-                                        else:
-                                            visit_msg = res['data']
-                                            if visit_msg:
-                                                data_queue.appendleft({'region': 'center',
-                                                                       'message': visit_msg})
-                                    else:
-                                        add_log(LogStatus.ERROR, LogService.CAMERA,
-                                                f'Не удалось отправить запрос на отметку посещаемости: {user.phone_number}')
 
                             break
         except Exception as ex:
@@ -147,14 +145,15 @@ def display_courses_qr_code():
             if is_shabbat_time(now):
                 continue
             if get_timetable_message(now):
-                if (now - last_qr_code_timestamp).seconds > 12:
+                if (now - last_qr_code_timestamp).seconds > 20:
                     uri = get_qr_visits_uri()
                     if uri:
                         last_qr_code_timestamp = now
                         data_queue.appendleft({'region': 'qr_code', 'message': uri})
                         time.sleep(1)
         except Exception as ex:
-            add_log(LogStatus.ERROR, LogService.CAMERA, ex)
+            print(ex)
+            # add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
 
 def display_timetable():
@@ -187,7 +186,7 @@ async def sockets_producer(websocket, path):
             if data_queue:
                 data = data_queue.popleft()
                 await websocket.send(json.dumps(data))
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.25)
         except Exception as ex:
             add_log(LogStatus.ERROR, LogService.CAMERA, ex)
 
